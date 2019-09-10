@@ -1,0 +1,10 @@
+# Points to the file that contains your datamodel
+datamodel: datamodel.prisma
+databaseType: document
+endpoint: http://localhost:4466
+secret: fish
+
+# Specifies language & location for the generated Prisma client
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client
