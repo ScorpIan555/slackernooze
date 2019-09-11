@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", "jsx"]
+      }
+    ],
+    "prettier/prettier": "error",
+    "max-len": ["error", 80]
+  },
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "ecmaFeatures": {
+      "esversion": 9,
+      "jsx": true,
+      "destructuring": true
+    }
+  },
+  "env": {
+    "browser": true
+  }
+  // "settings": {
+  //   "import/resolver": {
+  //     "webpack": {
+  //       "config": "./webpack.common.config.js"
+  //     }
+  //   }
+  // }
+}
