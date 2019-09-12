@@ -4,13 +4,16 @@ const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const Link = require('./resolvers/Link');
 const User = require('./resolvers/User');
-// import { post, signup, login, updateLink, deleteLink } from './src/resolvers/';
+const Subscription = require('./resolvers/Subscription');
+const Vote = require('./resolvers/Vote');
 
 const resolvers = {
   Query,
   Mutation,
+  Subscription,
   User,
-  Link
+  Link,
+  Vote
 };
 
 // 3

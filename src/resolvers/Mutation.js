@@ -88,10 +88,35 @@ const deleteLink = (root, args) => {
   return link;
 };
 
+const vote = async (parent, args, context, info) => {
+  console.log('Mutation.vote.parent:::', parent);
+  console.log('Mutation.vote.args:::', args);
+  console.log('Mutation.vote.context:::', context);
+  console.log('Mutation.vote.info:::', info);
+  // 1
+  const userId = getUserId(context);
+
+  // 2
+  const linkExists = await context.prisma.$exists.vote({
+    user: { id: userId },
+    link: { id: args.linkId }
+  });
+  if (linkExists) {
+    throw new Error(`Already voted for link: ${args.linkId}`);
+  }
+
+  // 3
+  return context.prisma.createVote({
+    user: { connect: { id: userId } },
+    link: { connect: { id: args.linkId } }
+  });
+};
+
 module.exports = {
   signup,
   login,
   post,
   updateLink,
-  deleteLink
+  deleteLink,
+  vote
 };

@@ -4,6 +4,7 @@ type Link {
   url: String!
   postedBy: User
   createdAt: DateTime! @createdAt
+  votes: [Vote!]! @relation(link: INLINE)
 }
 
 type User {
@@ -12,4 +13,11 @@ type User {
   email: String! @unique
   password: String!
   links: [Link!]!  @relation(link: INLINE)
+  votes: [Vote!]! @relation(link: INLINE)
+}
+
+type Vote {
+  id: ID! @id
+  link: Link! 
+  user: User! 
 }
