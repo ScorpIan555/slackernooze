@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import Head from "next/head";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
-// import fetch from 'isomorphic-unfetch'
+import React, { useMemo } from 'react';
+import Head from 'next/head';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createHttpLink } from 'apollo-link-http';
+import fetch from 'isomorphic-unfetch';
 
 /**
  * Creates and provides the apolloContext
@@ -16,7 +16,7 @@ import { createHttpLink } from "apollo-link-http";
  */
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000"
+  uri: 'http://localhost:4000'
 });
 
 const client = new ApolloClient({
@@ -27,7 +27,7 @@ const client = new ApolloClient({
 export function withApollo(PageComponent) {
   return (
     <ApolloProvider client={client}>
-      <PageComponent {...pageProps} />
+      <PageComponent />
     </ApolloProvider>
   );
 }

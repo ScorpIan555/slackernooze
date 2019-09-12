@@ -1,7 +1,7 @@
 // components/NavBar.js
 
-import "./NavBar.scss";
-import NavButton from "./NavButton";
+import './NavBar.scss';
+import NavButton from './NavButton';
 
 const NavBar = props => (
   <div className="NavBar">
