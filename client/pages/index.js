@@ -1,20 +1,40 @@
 // pages/index.js
-import React from 'react';
+import React, { Component } from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import LinkList from '../components/LinkList';
 import { withApollo } from '../lib/apollo';
 
-const IndexPage = () => (
-  <Layout>
-    <br />
-    {/* <Link href="/explore">
-      <a> Welcome to Slacker News! Start Exploring Now</a>
-    </Link> */}
+// Apollo Client imports
+import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createHttpLink } from 'apollo-link-http';
+// import fetch from 'isomorphic-unfetch';
 
-    {/* <LinkList></LinkList> */}
-  </Layout>
-);
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000'
+});
 
-// export default withApollo(IndexPage);
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
+});
+
+class IndexPage extends Component {
+  render() {
+    console.log('IndexPage.props:::', this.props);
+    console.log('client:::', client);
+    return (
+      <ApolloProvider client={client}>
+        <Layout>
+          <p>Apollo GraphQL App</p>
+
+          {/* <LinkList /> */}
+        </Layout>
+      </ApolloProvider>
+    );
+  }
+}
+
 export default IndexPage;

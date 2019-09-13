@@ -1,13 +1,14 @@
 
 # server-side .gitignore
-server/node_modules/
+*/node_modules/
 server/prisma/.env
 server/.env
-server/prisma/.env
 
 
 # client-side .gitignore
-client/node_modules/
+# clien/node_modules/
 # next.js
-/.next/
-/out/
+*/.next/
+*/out/
+# ref
+.ref-files
