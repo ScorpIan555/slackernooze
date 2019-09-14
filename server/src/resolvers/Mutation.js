@@ -52,8 +52,9 @@ const login = async (parent, args, context, info) => {
 const post = (root, args, context) => {
   console.log('Mutation.post.parent:::', root);
   console.log('Mutation.post.args:::', args);
-  console.log('Mutation.post.context:::', context);
-  const userId = getUserId(context);
+  console.log('Mutation.post.context:::', context.request.get('Authorization'));
+  const userId = getUserId(context, 'post');
+  console.log('Mutation.post.userId:::', userId);
   return context.prisma.createLink({
     url: args.url,
     description: args.description,

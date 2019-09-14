@@ -20,9 +20,6 @@ class LinkList extends Component {
     return (
       <Query query={FEED_QUERY}>
         {({ loading, error, data }) => {
-          {
-            console.log('error:::', error);
-          }
           if (loading) return <div>Fetching</div>;
           if (error) return <div>Error</div>;
 

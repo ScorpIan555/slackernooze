@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import LinkList from '../components/LinkList';
+import CreateLink from '../components/CreateLink';
 
 // Apollo Client imports
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -23,12 +24,15 @@ const client = new ApolloClient({
 class IndexPage extends Component {
   render() {
     console.log('IndexPage.props:::', this.props);
-    console.log('client:::', client);
+    // console.log('client:::', client);
     return (
       <ApolloProvider client={client}>
         <Layout>
           <div>
             <LinkList />
+          </div>
+          <div>
+            <CreateLink />
           </div>
         </Layout>
       </ApolloProvider>

@@ -1,7 +1,7 @@
 async function feed(parent, args, context, info) {
   const where = args.filter ? { description_contains: args.filter } : {};
 
-  console.log('where::::', where);
+  // console.log('where::::', where);
 
   const links = await context.prisma.links({
     where,
@@ -9,8 +9,8 @@ async function feed(parent, args, context, info) {
     first: args.first,
     orderBy: args.orderBy
   });
-  console.log('links:::', links);
-  const count = await context.prisma
+  // console.log('links:::', links);
+  const count = await context.prisma 
     .linksConnection({
       where
     })

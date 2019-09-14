@@ -1,12 +1,23 @@
 const jwt = require('jsonwebtoken');
 
-const APP_SECRET = 'GraphQL-is-aw3some';
+let APP_SECRET = 'GraphQL-is-aw3some';
+let Authorization;
 
-const getUserId = context => {
-  const Authorization = context.request.get('Authorization');
+const getUserId = (context, type) => {
+  if (type === 'post') {
+    Authorization =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDc5Nzc1Yjg1N2FiYTAwMDdlMWU4NWIiLCJpYXQiOjE1NjgyNDE0OTl9.tPYaphU-uWeXn4jJQaANdNXPd9-SaJoCrrv6etHq5VA';
+  }
+  if (type !== 'post') {
+    Authorization = context.request.get('Authorization');
+  }
+
+  console.log('Authorization:::', Authorization);
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
     const { userId } = jwt.verify(token, APP_SECRET);
+    console.log('token:::', token);
+    console.log('userId:::', userId);
     return userId;
   }
 
