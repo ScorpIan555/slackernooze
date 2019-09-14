@@ -2,7 +2,7 @@
 datamodel: datamodel.prisma
 databaseType: document
 endpoint: http://localhost:4466
-secret: fish
+secret: balls
 
 # Specifies language & location for the generated Prisma client
 generate:

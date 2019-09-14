@@ -3,14 +3,13 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import LinkList from '../components/LinkList';
-import { withApollo } from '../lib/apollo';
 
 // Apollo Client imports
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
-// import fetch from 'isomorphic-unfetch';
+import fetch from 'isomorphic-unfetch';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000'
@@ -28,9 +27,9 @@ class IndexPage extends Component {
     return (
       <ApolloProvider client={client}>
         <Layout>
-          <p>Apollo GraphQL App</p>
-
-          {/* <LinkList /> */}
+          <div>
+            <LinkList />
+          </div>
         </Layout>
       </ApolloProvider>
     );
