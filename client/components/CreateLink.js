@@ -18,7 +18,7 @@ const CreateLink = () => {
     mutation PostMutation($description: String!, $url: String!) {
       post(description: $description, url: $url) {
         id
-        createdAt
+        # createdAt
         url
         description
       }

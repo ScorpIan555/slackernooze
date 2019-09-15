@@ -1,12 +1,18 @@
 // components/Header.js
-import Link from "next/link";
+import { Fragment } from 'react';
+import Link from 'next/link';
 
-import "./Header.scss";
+import './Header.scss';
 
 const Header = props => (
-  <Link href="/">
-    <div className="Header">{props.appTitle}</div>
-  </Link>
+  <Fragment>
+    <div className="Header">
+      <Link href="/">{props.appTitle}</Link>
+    </div>
+    <Link href="/submit">
+      <div className="Header">Submit</div>
+    </Link>
+  </Fragment>
 );
 
 export default Header;

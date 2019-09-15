@@ -1,8 +1,7 @@
-// pages/index.js
-import React, { Component } from 'react';
-import Link from 'next/link';
+// pages/createLink.js
+import React from 'react';
+import CreateLink from '../components/CreateLink';
 import Layout from '../components/Layout';
-import LinkList from '../components/LinkList';
 
 // Apollo Client imports
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -20,18 +19,18 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const IndexPage = props => {
+const createLinkPage = props => {
   console.log('IndexPage.props:::', props);
-
+  // console.log('client:::', client);
   return (
     <ApolloProvider client={client}>
       <Layout>
         <div>
-          <LinkList />
+          <CreateLink />
         </div>
       </Layout>
     </ApolloProvider>
   );
 };
 
-export default IndexPage;
+export default createLinkPage;
