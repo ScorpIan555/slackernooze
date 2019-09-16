@@ -2,9 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Formik, ErrorMessage, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import s from './Subscription.scss';
+
+const POST_MUTATION = gql`
+  mutation PostMutation($description: String!, $url: String!) {
+    post(description: $description, url: $url) {
+      id
+      # createdAt
+      url
+      description
+    }
+  }
+`;
+
 const CreateLink = () => {
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
+  // const [createPost, { loading }] = useMutation(POST_MUTATION);
 
   useEffect(() => {
     console.log('description:::', description);
@@ -13,17 +29,6 @@ const CreateLink = () => {
   useEffect(() => {
     console.log('url:::', url);
   });
-
-  const POST_MUTATION = gql`
-    mutation PostMutation($description: String!, $url: String!) {
-      post(description: $description, url: $url) {
-        id
-        # createdAt
-        url
-        description
-      }
-    }
-  `;
 
   return (
     <div>

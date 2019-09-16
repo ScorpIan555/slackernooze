@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class NewsLink extends Component {
   componentDidMount() {
-    console.log('NewsLink:::', this.props);
+    // console.log('NewsLink:::', this.props);
   }
 
   render() {
