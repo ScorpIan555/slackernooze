@@ -1,0 +1,10 @@
+service: slacker-nooze
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+myNextApplication:
+  component: serverless-next.js
+  inputs:
+    domain: ['slacker_nooze', 'iandaley.ninja']
