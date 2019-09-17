@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_ENV=development CUSTOM_ENV=local next dev",
     "build": "next build",
     "start": "next start"
   },
@@ -13,6 +13,8 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@zeit/next-sass": "^1.0.1",
     "apollo-boost": "^0.4.4",
+    "dotenv": "^8.1.0",
+    "dotenv-webpack": "^1.7.0",
     "graphql": "^14.5.4",
     "isomorphic-unfetch": "^3.0.0",
     "next": "latest",

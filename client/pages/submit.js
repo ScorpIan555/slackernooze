@@ -20,7 +20,7 @@ const client = new ApolloClient({
 });
 
 const createLinkPage = props => {
-  console.log('IndexPage.props:::', props);
+  // console.log('IndexPage.props:::', props);
   // console.log('client:::', client);
   return (
     <ApolloProvider client={client}>
