@@ -1,7 +1,7 @@
 service: slacker-nooze
 custom:
   stage: ${opt:stage, self:provider.stage}
-  environment: ${file(.env):${self:custom.stage}}
+  environment: ${file(env.yml):${self:custom.stage}}
 
 provider:
   name: aws
