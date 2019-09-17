@@ -5,6 +5,7 @@ server/prisma/.env
 server/.env
 */env.yml
 */.env
+.env
 
 
 # client-side .gitignore
