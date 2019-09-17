@@ -5,8 +5,7 @@ let Authorization;
 
 const getUserId = (context, type) => {
   if (type === 'post') {
-    Authorization =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDc5Nzc1Yjg1N2FiYTAwMDdlMWU4NWIiLCJpYXQiOjE1NjgyNDE0OTl9.tPYaphU-uWeXn4jJQaANdNXPd9-SaJoCrrv6etHq5VA';
+    Authorization = process.env.APP_SECRET;
   }
   if (type !== 'post') {
     Authorization = context.request.get('Authorization');

@@ -3,6 +3,8 @@
 */node_modules/
 server/prisma/.env
 server/.env
+*/env.yml
+*/.env
 
 
 # client-side .gitignore
