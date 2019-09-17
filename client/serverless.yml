@@ -7,4 +7,4 @@ provider:
 myNextApplication:
   component: serverless-next.js
   inputs:
-    domain: ['slacker_nooze', 'iandaley.ninja']
+    domain: ['slacker-nooze', 'iandaley.ninja']
