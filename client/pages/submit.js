@@ -24,7 +24,7 @@ const createLinkPage = props => {
   // console.log('client:::', client);
   return (
     <ApolloProvider client={client}>
-      <Layout>
+      <Layout> 
         <div>
           <CreateLink />
         </div>

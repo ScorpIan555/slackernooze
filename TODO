@@ -1,0 +1,5 @@
+1) ref: https://swizec.com/blog/useauth-the-simplest-way-to-add-authentication-to-your-react-app/swizec/9179
+    Need to double check the _app.js stuff, check browser history to see if there are old helpful links from Sept.
+    Where do I wanna wrap the AuthProvider component?  Can I do this in the _app so that it always instantiates with that already set up...
+
+2) What is the NextJS equivalent for:  import { navigate } from 'gatsby'; ????  Need that as the function to provide to navigate clalback in AuthProvider component
