@@ -8,6 +8,9 @@ import './Layout.scss';
 import './index.scss';
 
 import navButtons from '../config/buttons';
+// @TODO
+// the navButtons is a child prop, need to add a /login button to whatever list
+//
 
 const Layout = props => {
   console.log('Layout.props:::', process.env.APP_SECRET);

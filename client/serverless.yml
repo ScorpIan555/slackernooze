@@ -10,6 +10,9 @@ provider:
   region: us-east-1
   environment:
     APP_SECRET: ${self:custom.environment.APP_SECRET}
+    AUTHO_DOMAIN: ${self:custom.environment.AUTHO_DOMAIN}
+    AUTHO_CLIENT_ID: ${self:custom.environment.AUTHO_CLIENT_ID}
+    AUTHO_SECRET: ${self:custom.environment.AUTHO_SECRET}
 
 myNextApplication:
   component: serverless-next.js
