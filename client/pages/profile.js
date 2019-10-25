@@ -1,7 +1,9 @@
 // pages/profile.js
 
-import Layout from "../components/Layout";
+import Layout from '../components/Layout';
 
-const ProfileView = props => <Layout>{`Profile View`}</Layout>;
+const ProfileView = props => {
+  return `Profile View`;
+};
 
 export default ProfileView;

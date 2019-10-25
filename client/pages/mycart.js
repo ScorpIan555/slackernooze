@@ -1,7 +1,9 @@
 // pages/mycart.js
 
-import Layout from "../components/Layout";
+import Layout from '../components/Layout';
 
-const MyCartView = props => <Layout>{`My Cart View`}</Layout>;
+const MyCartView = props => {
+  return `My Cart View`;
+};
 
 export default MyCartView;

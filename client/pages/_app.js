@@ -1,15 +1,15 @@
 import React from 'react';
 import App from 'next/app';
-import { AuthProvider } from 'react-use-auth';
+import Layout from '../components/Layout';
 
 class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
 
     return (
-      <AuthProvider>
+      <Layout>
         <Component {...pageProps} />
-      </AuthProvider>
+      </Layout>
     );
   }
 }
