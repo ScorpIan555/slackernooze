@@ -7,11 +7,25 @@ import './Header.scss';
 const Header = props => (
   <Fragment>
     <div className="Header">
-      <Link href="/">{props.appTitle}</Link>
+      <div>
+        <Link href="/">{props.appTitle + ' '}</Link>
+      </div>
+      <div className="">
+        <Link href="/submit">
+          <a> | Submit</a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/signup">
+          <a> | Signup</a>
+        </Link>
+      </div>
+      <div>
+        <Link href="/login">
+          <a> | Login</a>
+        </Link>
+      </div>
     </div>
-    <Link href="/submit">
-      <div className="Header">Submit</div>
-    </Link>
   </Fragment>
 );
 
