@@ -9,37 +9,37 @@ class MyApp extends App {
     user: null
   };
 
-  componentDidMount = () => {
-    const user = localStorage.getItem('coolapp-user');
-    if (user) {
-      this.setState({
-        user
-      });
-    } else {
-      Router.push('/login');
-    }
-  };
+  // componentDidMount = () => {
+  //   const user = localStorage.getItem('coolapp-user');
+  //   if (user) {
+  //     this.setState({
+  //       user
+  //     });
+  //   } else {
+  //     Router.push('/login');
+  //   }
+  // };
 
-  signIn = (username, password) => {
-    localStorage.setItem('coolapp-user', username);
+  // signIn = (username, password) => {
+  //   localStorage.setItem('coolapp-user', username);
 
-    this.setState(
-      {
-        user: username
-      },
-      () => {
-        Router.push('/');
-      }
-    );
-  };
+  //   this.setState(
+  //     {
+  //       user: username
+  //     },
+  //     () => {
+  //       Router.push('/');
+  //     }
+  //   );
+  // };
 
-  signOut = () => {
-    localStorage.removeItem('coolapp-user');
-    this.setState({
-      user: null
-    });
-    Router.push('/login');
-  };
+  // signOut = () => {
+  //   localStorage.removeItem('coolapp-user');
+  //   this.setState({
+  //     user: null
+  //   });
+  //   Router.push('/login');
+  // };
 
   render() {
     let localStorage;

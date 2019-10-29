@@ -8,13 +8,19 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
-  environment:
+  environment: # set env variables
     APP_SECRET: ${self:custom.environment.APP_SECRET}
     AUTHO_DOMAIN: ${self:custom.environment.AUTHO_DOMAIN}
     AUTHO_CLIENT_ID: ${self:custom.environment.AUTHO_CLIENT_ID}
     AUTHO_SECRET: ${self:custom.environment.AUTHO_SECRET}
 
-myNextApplication:
+myNextApplication: # set domain
   component: serverless-next.js
   inputs:
     domain: ['slacker-nooze', 'iandaley.ninja']
+
+# Create resources with separate CloudFormation templates
+resources:
+  # Cognito
+  - ${file(lib/deployment-resources/cognito-user-pool.yml)}
+  - ${file(lib/deployment-resources/cognito-identity-pool.yml)}
