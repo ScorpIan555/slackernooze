@@ -9,10 +9,10 @@ const dev = {
 
 const prod = {
   cognito: {
-    REGION: 'us-east-1',
-    USER_POOL_ID: 'us-east-1_ME6C1YYem',
-    APP_CLIENT_ID: '3c2gp5pkie4bsoptg3hitfs4km',
-    IDENTITY_POOL_ID: 'us-east-1:d5cb50b7-df43-4b65-b84a-0b05ff90292f'
+    REGION: '',
+    USER_POOL_ID: '',
+    APP_CLIENT_ID: '',
+    IDENTITY_POOL_ID: ''
   }
 };
 
