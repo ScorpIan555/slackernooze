@@ -14,17 +14,17 @@ Resources:
           ProviderName:
             Fn::GetAtt: ['CognitoUserPool', 'ProviderName']
 
-  # IAM roles
-  CognitoIdentityPoolRoles:
-    Type: AWS::Cognito::IdentityPoolRoleAttachment
-    Properties:
-      IdentityPoolId:
-        Ref: CognitoIdentityPool
-      Roles:
-        authenticated:
-          Fn::GetAtt: [CognitoAuthRole, Arn]
-        unauthenticated:
-          Fn::GetAtt: [CognitoUnauthedRole, Arn]
+  # # IAM roles
+  # CognitoIdentityPoolRoles:
+  #   Type: AWS::Cognito::IdentityPoolRoleAttachment
+  #   Properties:
+  #     IdentityPoolId:
+  #       Ref: CognitoIdentityPool
+  #     Roles:
+  #       authenticated:
+  #         Fn::GetAtt: [CognitoAuthRole, Arn]
+  #       unauthenticated:
+  #         Fn::GetAtt: [CognitoUnauthedRole, Arn]
 
 # Print out the Id of the Identity Pool that is created
 Outputs:
