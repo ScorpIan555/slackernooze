@@ -3,7 +3,7 @@ Resources:
     Type: AWS::Cognito::UserPool
     Properties:
       # Generate a name based on the stage
-      UserPoolName: ${self:custom.stage}-user-pool
+      UserPoolName: slackernooze-user-pool${self:custom.stage}
       # Set email as an alias
       UsernameAttributes:
         - email
@@ -14,7 +14,7 @@ Resources:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       # Generate an app client name based on the stage
-      ClientName: slackernooze-user-pool-${self:custom.stage}
+      ClientName: slackernooze-user-pool${self:custom.stage}
       UserPoolId:
         Ref: CognitoUserPool
       ExplicitAuthFlows:
