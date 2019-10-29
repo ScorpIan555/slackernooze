@@ -44,7 +44,7 @@ class MyApp extends App {
   render() {
     let localStorage;
     const { Component, pageProps } = this.props;
-    console.log('_app.js -- this.props:::', this.props);
+    console.log('_app.js - this.props:::', this.props);
 
     return (
       <UserContext.Provider
