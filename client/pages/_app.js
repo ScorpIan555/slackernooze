@@ -2,7 +2,7 @@ import React from 'react';
 import App from 'next/app';
 import Router from 'next/router';
 import Layout from '../components/Layout';
-import UserContext from '../components/UserContext';
+// import UserContext from '../components/UserContext';
 
 class MyApp extends App {
   state = {
@@ -47,17 +47,16 @@ class MyApp extends App {
     console.log('_app.js -- this.props:::', this.props);
 
     return (
-      <UserContext.Provider
-        value={{
-          user: this.state.user,
-          signIn: this.signIn,
-          signOut: this.signOut
-        }}
-      >
+      // <UserContext.Provider
+      //   value={{
+      //     user: this.state.user,
+      //     signIn: this.signIn,
+      //     signOut: this.signOut
+      //   }}
+      // >
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </UserContext.Provider>
     );
   }
 }

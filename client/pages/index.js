@@ -1,15 +1,12 @@
 // pages/index.js
-import React, { Component } from 'react';
-import Link from 'next/link';
-import Layout from '../components/Layout';
 import LinkList from '../components/LinkList';
 import { withApollo } from '../lib/apollo';
+import useAuth from '../components/customHooks/useAuth';
 
 const IndexPage = props => {
   console.log('IndexPage.props:::', props);
+  console.log('IndexPage.props:::', useAuth);
 
-  return (
-      <LinkList />
-  );
+  return <LinkList />;
 };
 export default withApollo(IndexPage);
