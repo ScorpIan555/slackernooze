@@ -1,12 +1,12 @@
-// import auth0 from '../../utils/auth0';
+import { Auth } from 'aws-amplify';
 
-// export default async function login(req, res) {
-//   try {
-//     await auth0.handleLogin(req, res);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(error.status || 400).end(error.message);
-//   }
-// }
-
-// this needs to handle login to AWS
+export default async function login(req, res) {
+  try {
+    const user = await Auth.signIn(username, password);
+    console.log('AwsAuth.signup:::', user);
+    return user;
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 400).end(error.message);
+  }
+}

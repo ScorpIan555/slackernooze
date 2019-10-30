@@ -1,4 +1,4 @@
-import config from './awsAmplifyConfig';
+import config from './awsConfig';
 
 // configuration objects passed to AWS at instantiation
 const awsConfig = {

@@ -1,9 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useAuthRequest } from '../store/index';
+import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
 
 const UserSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [createPost, { loading }] = useMutation(POST_MUTATION);
+
+  const method = 'signUp';
+  let params = {
+    email,
+    password
+  };
+
+  // const handleClick = async event => {
+  const [{ status, response }, makeRequest] = useAuthRequest(
+    'endpoint',
+    method,
+    params
+  );
+  // const result = await useAuthRequest(method, params);
+  // console.log('result:::', result);
+  // return result;
+  // };
 
   useEffect(() => {
     console.log('email:::', email);
@@ -13,11 +32,9 @@ const UserSignup = () => {
     console.log('password:::', password);
   });
 
-  const handleClick = async event => {
-    event.preventDefault();
-    console.log('event.target:::', event.target);
-  };
-
+  // const handleClick = async event => {
+  //   event.preventDefault();
+  // console.log('event.target:::', event.target);
   return (
     <div>
       <div className="flex flex-column mt3">
@@ -26,7 +43,7 @@ const UserSignup = () => {
           value={email}
           onChange={event => setEmail(event.target.value)}
           type="text"
-          placeholder="username"
+          placeholder="email"
         />
         <input
           className="mb3"
@@ -36,12 +53,14 @@ const UserSignup = () => {
           placeholder="A url for the link"
         />
       </div>
+
       {/* <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
         {postMutation => <button onClick={postMutation}>Submit</button>p}
       </Mutation> */}
-      <button onClick={handleClick}>Submit</button>
+      <button onClick={makeRequest}>Submit</button>
     </div>
   );
 };
+// };
 
 export default UserSignup;

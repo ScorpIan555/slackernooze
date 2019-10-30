@@ -2,45 +2,19 @@ import React from 'react';
 import App from 'next/app';
 import Router from 'next/router';
 import Layout from '../components/Layout';
+import { withApollo } from '../lib/apollo';
 // import UserContext from '../components/UserContext';
+import awsConfig from '../lib/awsAuth';
+import Amplify from '@aws-amplify/auth';
+
+Amplify.configure({
+  //  // uncomment when client-api troubleshooting is done
+  Auth: awsConfig.Auth, // AWS Amplify Cognito authorization module
+  Storage: awsConfig.Storage, // AWS Amplify S3 asset storage module
+  API: awsConfig.API // AWS Amplify API Gateway api connection module
+});
 
 class MyApp extends App {
-  state = {
-    user: null
-  };
-
-  // componentDidMount = () => {
-  //   const user = localStorage.getItem('coolapp-user');
-  //   if (user) {
-  //     this.setState({
-  //       user
-  //     });
-  //   } else {
-  //     Router.push('/login');
-  //   }
-  // };
-
-  // signIn = (username, password) => {
-  //   localStorage.setItem('coolapp-user', username);
-
-  //   this.setState(
-  //     {
-  //       user: username
-  //     },
-  //     () => {
-  //       Router.push('/');
-  //     }
-  //   );
-  // };
-
-  // signOut = () => {
-  //   localStorage.removeItem('coolapp-user');
-  //   this.setState({
-  //     user: null
-  //   });
-  //   Router.push('/login');
-  // };
-
   render() {
     let localStorage;
     const { Component, pageProps } = this.props;
@@ -54,11 +28,11 @@ class MyApp extends App {
       //     signOut: this.signOut
       //   }}
       // >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     );
   }
 }
 
-export default MyApp;
+export default withApollo(MyApp);
