@@ -1,9 +1,9 @@
 const dev = {
   cognito: {
     REGION: 'us-east-1',
-    USER_POOL_ID: 'us-east-1_BrEUSj1Lz',
-    APP_CLIENT_ID: '55q2ijm1fiktc96bc8volkdd9b',
-    IDENTITY_POOL_ID: 'us-east-1:7815ded3-825f-4398-b93e-aaadb1450a45'
+    USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+    APP_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID
   }
 };
 
