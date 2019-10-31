@@ -1,9 +1,9 @@
 // pages/nearme.js
 
-import Layout from '../components/Layout';
+import Counter from '../components/Counter';
 
 const NearMeView = props => {
-  return `Near Me View`;
+  return <Counter />;
 };
 
 export default NearMeView;

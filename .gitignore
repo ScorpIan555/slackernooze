@@ -13,5 +13,6 @@ server/.env
 # next.js
 */.next/
 */out/
+client/env.yml
 # ref
 .ref-files

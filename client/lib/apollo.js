@@ -18,6 +18,7 @@ let apolloClient = null;
  */
 export function withApollo(PageComponent, { ssr = true } = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
+    // memoize apolloClient state
     const client = useMemo(
       () => apolloClient || initApolloClient(apolloState),
       []
@@ -43,6 +44,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 
   if (ssr || PageComponent.getInitialProps) {
     WithApollo.getInitialProps = async ctx => {
+      console.log('ctx object:::', ctx);
       const { AppTree } = ctx;
 
       // Initialize ApolloClient, add it to the ctx object so
@@ -53,6 +55,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
       let pageProps = {};
       if (PageComponent.getInitialProps) {
         pageProps = await PageComponent.getInitialProps(ctx);
+        console.log('pageProps after get initial props call:::', pageProps);
       }
 
       // Only on the server:
