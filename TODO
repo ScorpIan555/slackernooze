@@ -3,3 +3,19 @@
     Where do I wanna wrap the AuthProvider component?  Can I do this in the _app so that it always instantiates with that already set up...
 
 2) What is the NextJS equivalent for:  import { navigate } from 'gatsby'; ????  Need that as the function to provide to navigate clalback in AuthProvider component
+
+
+
+%%%%%%%% 11/1
+
+3) start w/ the react hooks library from the apollo docs
+https://www.apollographql.com/docs/react/api/react-hooks/
+
+4) need to decide which gql schema changes will be needed
+
+5) what's my gql endpoint?  check the tutorial and my code...
+
+6)  interesting:  https://github.com/nearform/graphql-hooks
+This loks like, at least, a good model to review, the zeit team used it in 
+https://github.com/zeit/next.js/blob/master/examples/with-graphql-hooks/pages/_app.js
+

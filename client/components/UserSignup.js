@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthRequest } from '../store/index';
 import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const SIGNUP_MUTATION = gql`
+  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
+    signup(email: $email, password: $password, name: $name) {
+      token
+    }
+  }
+`;
 
 const UserSignup = () => {
   const [email, setEmail] = useState('');
@@ -24,13 +34,13 @@ const UserSignup = () => {
   );
 
   useEffect(() => {
-    console.log('email:::', email);
+    // console.log('email:::', email);
   });
 
   useEffect(() => {
-    console.log('password:::', password);
-    console.log('confirmPassword:::', confirmPassword);
-    console.log('validateForm', validateForm);
+    // console.log('password:::', password);
+    // console.log('confirmPassword:::', confirmPassword);
+    // console.log('validateForm', validateForm);
     password === confirmPassword && password.length > 0
       ? setValidateForm(true)
       : setValidateForm(false);
@@ -47,8 +57,8 @@ const UserSignup = () => {
   // console.log('event.target:::', event.target);
   return (
     <div>
-      <form>
-        <div className="flex flex-column mt3">
+      <div className="flex flex-column mt3">
+        <div>
           <input
             className="mb2"
             value={email}
@@ -57,16 +67,17 @@ const UserSignup = () => {
             placeholder="email"
           />
           <br />
-          <div>
-            <input
-              className="mb3"
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-              type="password"
-              placeholder="password"
-            />
-          </div>
-
+        </div>
+        <div>
+          <input
+            className="mb3"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+            type="password"
+            placeholder="password"
+          />
+        </div>
+        <div>
           <input
             className="mb3"
             value={confirmPassword}
@@ -75,25 +86,23 @@ const UserSignup = () => {
             placeholder="password"
           />
         </div>
-        {/* <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
-        {postMutation => <button onClick={postMutation}>Submit</button>p}
-      </Mutation> */}
-        <div>
-          {validateForm ? (
-            <button onClick={makeRequest}>Submit</button>
-          ) : (
-            <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
-          )}
-        </div>
-      </form>
+      </div>
+      <Mutation mutation={SIGNUP_MUTATION} variables={{ description, url }}>
+        {postMutation => <button onClick={postMutation}>Submit</button>}
+      </Mutation>
+      <div>
+        {validateForm ? (
+          <button onClick={makeRequest}>Submit</button>
+        ) : (
+          <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
+        )}
+      </div>
       {status === FETCHING && (
         <div className="api-request__fetching">Fetching...</div>
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-name">{response.data.name}</div>
           <div className="api-request__user-email">{response.data.email}</div>
-          <div className="api-request__user-phone">{response.data.phone}</div>
         </div>
       )}
       {status === ERROR && (
@@ -109,3 +118,19 @@ const UserSignup = () => {
 // };
 
 export default UserSignup;
+
+// {/* {status === FETCHING && (
+//     <div className="api-request__fetching">Fetching...</div>
+//   )}
+//   {status === SUCCESS && (
+//     <div className="api-request__user-info-container">
+//       <div className="api-request__user-email">SUCCESS</div>
+//     </div>
+//   )}
+//   {status === ERROR && (
+//     <div className="api-request__error-container">
+//       <div className="api-request__error-response">
+//         {JSON.stringify(response)}
+//       </div>
+//     </div>
+//   )} */}

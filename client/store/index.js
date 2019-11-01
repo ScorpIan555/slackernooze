@@ -17,6 +17,12 @@ const useAuthRequest = (endpoint, method, params) => {
     dispatch(fetching());
     try {
       //   const response = await axios[verb](endpoint, params);
+      console.log(
+        'Auth[method](params.email), params.password)::: ',
+        method,
+        params.email,
+        params.password
+      );
 
       const response = await Auth[method](params.email, params.password);
       console.log('Auth.response:::', response);
