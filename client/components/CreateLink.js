@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-
-const POST_MUTATION = gql`
-  mutation PostMutation($description: String!, $url: String!) {
-    post(description: $description, url: $url) {
-      id
-      # createdAt
-      url
-      description
-    }
-  }
-`;
+import GraphQLMutation from './GraphQLMutation';
+import { POST_MUTATION } from '../lib/graphql';
 
 const CreateLink = () => {
   const [description, setDescription] = useState('');
@@ -44,11 +33,18 @@ const CreateLink = () => {
           placeholder="A url for the link"
         />
       </div>
-      <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
-        {postMutation => <button onClick={postMutation}>Submit</button>}
-      </Mutation>
+      <GraphQLMutation
+        mutation={POST_MUTATION}
+        variables={{ description, url }}
+      />
     </div>
   );
 };
 
 export default CreateLink;
+
+{
+  /* //  <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
+//         {postMutation => <button onClick={postMutation}>Submit</button>}
+//       </Mutation> */
+}
