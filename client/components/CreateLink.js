@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import GraphQLMutation from './GraphQLMutation';
-import { POST_MUTATION } from '../lib/graphql';
+import GraphQLMutation from '../lib/graphql/GraphQLMutation';
+import { CREATE_POST_MUTATION } from '../lib/graphql';
 
 const CreateLink = () => {
   const [description, setDescription] = useState('');
@@ -34,7 +34,8 @@ const CreateLink = () => {
         />
       </div>
       <GraphQLMutation
-        mutation={POST_MUTATION}
+        name="createNewLink"
+        mutation={CREATE_POST_MUTATION}
         variables={{ description, url }}
       />
     </div>

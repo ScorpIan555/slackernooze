@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const POST_MUTATION = gql`
+const CREATE_POST_MUTATION = gql`
   mutation PostMutation($description: String!, $url: String!) {
     post(description: $description, url: $url) {
       id
@@ -11,4 +11,4 @@ const POST_MUTATION = gql`
   }
 `;
 
-export default POST_MUTATION;
+export default CREATE_POST_MUTATION;

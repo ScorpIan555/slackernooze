@@ -1,9 +1,11 @@
 type Query {
   info: String!
   feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
+  # 11/4 entry
+  # users()
 }
 
-type Feed {
+type Feed { 
   links: [Link!]!
   count: Int!
 }

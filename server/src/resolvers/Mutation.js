@@ -1,26 +1,53 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET, getUserId } = require('../utils');
+const Auth = require('@aws-amplify/auth');
 
 const signup = async (parent, args, context, info) => {
   console.log('Mutation.signup.parent:::', parent);
   console.log('Mutation.signup.args:::', args);
-  console.log('Mutation.signup.context.prisma:::', context.prisma);
-  console.log('Mutation.signup.info:::', info);
+  // console.log('Mutation.signup.context.prisma:::', context.prisma);
+  // console.log('Mutation.signup.info:::', info);
 
-  // 1
-  const password = await bcrypt.hash(args.password, 10);
-  // 2
-  const user = await context.prisma.createUser({ ...args, password });
+  console.log('AUTH.email', args.email);
+  console.log('AUTH.password', args.password);
+  console.log('AUTH.name', args.name);
+  const method = 'signUp';
+  let username = args.email;
+  let password = args.password;
+  console.log('email:::', username);
+  console.log('password:::', password);
+  // console.log('typeof.Auth:::', Auth);
 
-  // 3
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const response = Auth.signUp({ username, password })
+    .then(res => {
+      console.log('res:::', res);
+    })
+    .catch(err => {
+      console.log('error:::', err);
+    });
+  console.log('response:::', response);
 
-  // 4
-  return {
-    token, // pulling from copypasta APP_SECRET, not .env yet
-    user
-  };
+  // try {
+  //   const response = await Auth.signUp(email, password);
+  //   console.log('Auth.response:::', response);
+  // } catch (error) {
+  //   console.log(error.message);
+  //   console.error(error);
+  // }
+  // // 1
+  // const password = await bcrypt.hash(args.password, 10);
+  // // 2
+  // const user = await context.prisma.createUser({ ...args, password });
+
+  // // 3
+  // const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+  // // 4
+  // return {
+  //   token, // pulling from copypasta APP_SECRET, not .env yet
+  //   user
+  // };
 };
 
 const login = async (parent, args, context, info) => {

@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuthRequest } from '../store/index';
 import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation($email: String!, $password: String!, $name: String!) {
-    signup(email: $email, password: $password, name: $name) {
-      token
-    }
-  }
-`;
+import { SIGNUP_MUTATION } from '../lib/graphql';
+import { GraphQLMutation } from '../lib/graphql';
 
 const UserSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validateForm, setValidateForm] = useState(false);
@@ -22,6 +16,7 @@ const UserSignup = () => {
 
   const method = 'signUp';
   let params = {
+    name,
     email,
     password
   };
@@ -61,6 +56,16 @@ const UserSignup = () => {
         <div>
           <input
             className="mb2"
+            value={name}
+            onChange={event => setName(event.target.value)}
+            type="text"
+            placeholder="name"
+          />
+          <br />
+        </div>
+        <div>
+          <input
+            className="mb2"
             value={email}
             onChange={event => setEmail(event.target.value)}
             type="text"
@@ -68,6 +73,7 @@ const UserSignup = () => {
           />
           <br />
         </div>
+
         <div>
           <input
             className="mb3"
@@ -87,12 +93,20 @@ const UserSignup = () => {
           />
         </div>
       </div>
-      <Mutation mutation={SIGNUP_MUTATION} variables={{ description, url }}>
+      <Mutation
+        mutation={SIGNUP_MUTATION}
+        variables={{ name, email, password }}
+      >
         {postMutation => <button onClick={postMutation}>Submit</button>}
       </Mutation>
+
       <div>
         {validateForm ? (
-          <button onClick={makeRequest}>Submit</button>
+          <GraphQLMutation
+            name="userSignup"
+            mutation={SIGNUP_MUTATION}
+            variables={{ name, email, password }}
+          />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
         )}
