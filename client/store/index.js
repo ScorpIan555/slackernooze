@@ -24,8 +24,8 @@ const useAuthRequest = (endpoint, method, params) => {
         params.password
       );
 
-      // const response = await Auth[method](params.email, params.password);
-      // console.log('Auth.response:::', response);
+      const response = await Auth[method](params.email, params.password);
+      console.log('Auth.response:::', response);
       dispatch(success(response));
     } catch (e) {
       dispatch(error(e));

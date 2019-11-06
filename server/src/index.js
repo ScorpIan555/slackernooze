@@ -13,10 +13,10 @@ const Amplify = require('@aws-amplify/auth');
 
 console.log('auth:::', auth);
 
-Amplify.configure({
-  //  // uncomment when client-api troubleshooting is done
-  Auth: auth // AWS Amplify Cognito authorization module
-});
+// Amplify.configure({
+//   //  // uncomment when client-api troubleshooting is done
+//   Auth: auth // AWS Amplify Cognito authorization module
+// });
 
 const resolvers = {
   Query,

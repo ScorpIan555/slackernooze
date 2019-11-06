@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react';
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
+import AWSAppSyncClient from 'aws-appsync';
+import { ApolloClient } from 'apollo-client'; // tb removed for APP_Sync
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import AppSyncConfig from './awsAppSync';
+import Auth from '@aws-amplify/auth';
+
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'isomorphic-unfetch';
 
@@ -83,6 +87,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
             // Prevent Apollo Client GraphQL errors from crashing SSR.
             // Handle them in components via the data.error prop:
             // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
+            // https://blog.apollographql.com/graphql-explained-5844742f195e#.fq5jjdw7t
             console.error('Error while running `getDataFromTree`', error);
           }
 
@@ -131,7 +136,26 @@ function initApolloClient(initialState) {
  */
 function createApolloClient(initialState = {}) {
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
-  // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82
+  // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
+  // https://github.com/awslabs/aws-mobile-appsync-sdk-js#creating-a-client
+
+  // return new AWSAppSyncClient(
+  //   {
+  //     url: AppSyncConfig.graphqlEndpoint,
+  //     region: AppSyncConfig.region,
+  //     auth: {
+  //       type: AppSyncConfig.authenticationType,
+  //       apiKey: AppSyncConfig.apiKey,
+  //       // credentials: () => Auth.currentCredentials(),
+  //       jwtToken: async () => token // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
+  //     },
+  //     disableOffline: true
+  //   },
+  //   {
+  //     cache: new InMemoryCache().restore(initialState || {}),
+  //     ssrMode: true
+  //   }
+  // );
 
   // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
   return new ApolloClient({

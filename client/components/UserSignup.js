@@ -28,9 +28,7 @@ const UserSignup = () => {
     params
   );
 
-  useEffect(() => {
-    // console.log('email:::', email);
-  });
+  useEffect(() => {});
 
   useEffect(() => {
     // console.log('password:::', password);
@@ -93,6 +91,8 @@ const UserSignup = () => {
           />
         </div>
       </div>
+      <button onClick={makeRequest}>Cheat Bitch!</button>
+
       <Mutation
         mutation={SIGNUP_MUTATION}
         variables={{ name, email, password }}
@@ -116,7 +116,7 @@ const UserSignup = () => {
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-email">{response.data.email}</div>
+          <div className="api-request__user-email">{response}</div>
         </div>
       )}
       {status === ERROR && (

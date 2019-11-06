@@ -7,6 +7,11 @@ const dev = {
   }
 };
 
+// from: https://console.aws.amazon.com/iam/home?region=us-east-1#/roles/slackernoozeuserpooldev-SMS-Role?section=trust
+// IAM trust relationships, this is the old 'String Equals' field, changing
+// to the above ID Pool id per:  https://stackoverflow.com/questions/44043289/aws-invalid-identity-pool-configuration-check-assigned-iam-roles-for-this-poo
+// "sts:ExternalId": "5ae9c3ec-34d9-4fbd-a2ce-e7e78e0fb0a7"
+
 const prod = {
   cognito: {
     REGION: '',
