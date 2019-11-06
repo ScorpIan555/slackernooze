@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
 import Head from 'next/head';
 import { ApolloProvider } from '@apollo/react-hooks';
-import AWSAppSyncClient from 'aws-appsync';
+// import AWSAppSyncClient from 'aws-appsync'; // tb removed
 import { ApolloClient } from 'apollo-client'; // tb removed for APP_Sync
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import AppSyncConfig from './awsAppSync';
 import Auth from '@aws-amplify/auth';
 
-import { HttpLink } from 'apollo-link-http';
+import { HttpLink, createHttpLink } from 'apollo-link-http';
+import { createAuthLink } from 'aws-appsync-auth-link';
+import { ApolloLink } from 'apollo-link';
+
 import fetch from 'isomorphic-unfetch';
 
 let apolloClient = null;
@@ -135,9 +138,29 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
+  const getAwsToken = async () => {
+    let res = await Auth.currentCredentials();
+    // console.log('res:::', res.sessionToken);
+    return res.sessionToken;
+  };
+
+  let token = getAwsToken();
+
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
   // https://github.com/awslabs/aws-mobile-appsync-sdk-js#creating-a-client
+
+  console.log('AppSyncConfig.graphqlEndpoint', AppSyncConfig.graphqlEndpoint);
+  console.log('AppSyncConfig.region', AppSyncConfig.region);
+  console.log(
+    'AppSyncConfig.authenticationTpe',
+    AppSyncConfig.authenticationType
+  );
+  console.log('AppSyncConfig.apiKey', AppSyncConfig.apiKey);
+
+  console.log('AppSyncConfig.token', token);
+
+  // console.log('AppSyncConfig.token', currentCredentials);
 
   // return new AWSAppSyncClient(
   //   {
@@ -146,7 +169,7 @@ function createApolloClient(initialState = {}) {
   //     auth: {
   //       type: AppSyncConfig.authenticationType,
   //       apiKey: AppSyncConfig.apiKey,
-  //       // credentials: () => Auth.currentCredentials(),
+  //       credentials: () => Auth.currentCredentials(),
   //       jwtToken: async () => token // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
   //     },
   //     disableOffline: true
@@ -157,15 +180,38 @@ function createApolloClient(initialState = {}) {
   //   }
   // );
 
-  // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
+  let url = AppSyncConfig.graphqlEndpoint;
+
+  let auth = {
+    type: AppSyncConfig.authenticationType,
+    apiKey: AppSyncConfig.apiKey
+  };
+  let region = {
+    region: AppSyncConfig.region
+  };
+
+  // let link = ApolloLink.from([createAuthLink({ url, region, auth })]);
+  let link = ApolloLink.from([
+    createAuthLink({ url, region, auth }),
+    createHttpLink({ uri: url }) // incl per https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/473
+  ]);
+
   return new ApolloClient({
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
-    link: new HttpLink({
-      // TODO need to change this to an env variable
-      uri: 'http://localhost:4000', // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-      fetch
-    }),
-    cache: new InMemoryCache().restore(initialState)
+    link,
+    // cache: new InMemoryCache().restore(initialState)
+    cache: new InMemoryCache()
   });
+
+  // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
+  // return new ApolloClient({
+  //   ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
+  //   link: new HttpLink({
+  //     // TODO need to change this to an env variable
+  //     uri: 'http://localhost:4000', // Server URL (must be absolute)
+  //     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+  //     fetch
+  //   }),
+  //   cache: new InMemoryCache().restore(initialState)
+  // });
 }

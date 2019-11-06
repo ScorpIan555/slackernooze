@@ -15,6 +15,7 @@
     "@zeit/next-sass": "^1.0.1",
     "apollo-boost": "^0.4.4",
     "aws-appsync": "^2.0.2",
+    "aws-appsync-auth-link": "^1.0.1",
     "aws-appsync-react": "^2.0.2",
     "dotenv": "^8.1.0",
     "dotenv-webpack": "^1.7.0",

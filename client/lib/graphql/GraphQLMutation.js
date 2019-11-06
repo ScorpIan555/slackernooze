@@ -5,7 +5,11 @@ const GraphQLMutation = ({ mutation, variables }) => {
 
   return (
     <Mutation mutation={mutation} variables={variables}>
-      {postMutation => <button onClick={postMutation}>Submit</button>}
+      {postMutation => (
+        <button onClick={postMutation}>
+          <p>I killed a tramp once, it made me feelhorny</p>
+        </button>
+      )}
     </Mutation>
   );
 };
