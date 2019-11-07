@@ -4,8 +4,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 // import AWSAppSyncClient from 'aws-appsync'; // tb removed
 import { ApolloClient } from 'apollo-client'; // tb removed for APP_Sync
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import AppSyncConfig from './awsAppSync';
-import Auth from '@aws-amplify/auth';
+import { AwsAppSyncConfig, AwsAmplifyAuth } from './awsExports';
 
 import { HttpLink, createHttpLink } from 'apollo-link-http';
 import { createAuthLink } from 'aws-appsync-auth-link';
@@ -139,7 +138,7 @@ function initApolloClient(initialState) {
  */
 function createApolloClient(initialState = {}) {
   const getAwsToken = async () => {
-    let res = await Auth.currentCredentials();
+    let res = await AwsAmplifyAuth.currentCredentials();
     // console.log('res:::', res.sessionToken);
     return res.sessionToken;
   };
@@ -150,15 +149,18 @@ function createApolloClient(initialState = {}) {
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
   // https://github.com/awslabs/aws-mobile-appsync-sdk-js#creating-a-client
 
-  console.log('AppSyncConfig.graphqlEndpoint', AppSyncConfig.graphqlEndpoint);
-  console.log('AppSyncConfig.region', AppSyncConfig.region);
   console.log(
-    'AppSyncConfig.authenticationTpe',
-    AppSyncConfig.authenticationType
+    'AwsAppSyncConfig.graphqlEndpoint',
+    AwsAppSyncConfig.graphqlEndpoint
   );
-  console.log('AppSyncConfig.apiKey', AppSyncConfig.apiKey);
+  console.log('AwsAppSyncConfig.region', AwsAppSyncConfig.region);
+  console.log(
+    'AwsAppSyncConfig.authenticationTpe',
+    AwsAppSyncConfig.authenticationType
+  );
+  console.log('AwsAppSyncConfig.apiKey', AwsAppSyncConfig.apiKey);
 
-  console.log('AppSyncConfig.token', token);
+  console.log('AwsAppSyncConfig.token', token);
 
   // console.log('AppSyncConfig.token', currentCredentials);
 
@@ -180,14 +182,14 @@ function createApolloClient(initialState = {}) {
   //   }
   // );
 
-  let url = AppSyncConfig.graphqlEndpoint;
+  let url = AwsAppSyncConfig.graphqlEndpoint;
 
   let auth = {
-    type: AppSyncConfig.authenticationType,
-    apiKey: AppSyncConfig.apiKey
+    type: AwsAppSyncConfig.authenticationType,
+    apiKey: AwsAppSyncConfig.apiKey
   };
   let region = {
-    region: AppSyncConfig.region
+    region: AwsAppSyncConfig.region
   };
 
   // let link = ApolloLink.from([createAuthLink({ url, region, auth })]);

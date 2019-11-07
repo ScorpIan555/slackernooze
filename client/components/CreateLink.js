@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import GraphQLMutation from '../lib/graphql/GraphQLMutation';
-import { CREATE_POST_MUTATION } from '../lib/graphql';
+import { GraphQLMutation, CREATE_POST_MUTATION } from '../lib/graphql';
 
 const CreateLink = () => {
   const [description, setDescription] = useState('');

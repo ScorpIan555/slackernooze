@@ -4,26 +4,24 @@ import Router from 'next/router';
 import Layout from '../components/Layout';
 import { withApollo } from '../lib/apollo';
 // import UserContext from '../components/UserContext';
-import awsConfig from '../lib/awsAuth';
-import Amplify from '@aws-amplify/auth';
-import Auth from '@aws-amplify/auth';
+import { AwsAuthConfig, AwsAmplify, AwsAmplifyAuth } from '../lib/awsExports';
 
-Amplify.configure({
+AwsAmplify.configure({
   //  // uncomment when client-api troubleshooting is done
-  Auth: awsConfig.Auth // AWS Amplify Cognito authorization module
+  Auth: AwsAuthConfig.Auth // AWS Amplify Cognito authorization module
 });
 
 class MyApp extends App {
   componentDidMount() {
-    let fish = Auth.currentCredentials()
+    let fish = AwsAmplifyAuth.currentCredentials()
       .then(result => {
         console.log('fish:::', result);
       })
       .catch(error => {
         console.log('error:::', error);
-      });   
+      });
 
-    Auth.currentSession()
+    AwsAmplifyAuth.currentSession()
       .then(result => {
         console.log('currentSession.result:::', result);
       })

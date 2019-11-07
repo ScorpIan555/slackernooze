@@ -1,7 +1,7 @@
-import config from './awsConfig';
+import config from './awsEnvConfig';
 
 // configuration objects passed to AWS at instantiation
-const awsConfig = {
+const AwsAuthConfig = {
   Auth: {
     mandatorySignIn: false, // allows 'guest' users
     region: config.cognito.REGION,
@@ -11,4 +11,4 @@ const awsConfig = {
   }
 };
 
-export default awsConfig;
+export default AwsAuthConfig;
