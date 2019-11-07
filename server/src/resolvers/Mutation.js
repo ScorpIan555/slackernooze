@@ -1,8 +1,10 @@
+// ./server/src/resolvers/Mutation.js
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET, getUserId } = require('../utils');
-const Auth = require('@aws-amplify/auth');
 
+//   https://github.com/awslabs/aws-mobile-appsync-sdk-js#using-authorization-and-subscription-links-with-apollo-client-no-offline-support
 const signup = async (parent, args, context, info) => {
   console.log('Mutation.signup.parent:::', parent);
   console.log('Mutation.signup.args:::', args);

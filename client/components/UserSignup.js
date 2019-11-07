@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuthRequest } from '../store/index';
 import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
 import { Mutation } from 'react-apollo';
-import { SIGNUP_MUTATION } from '../lib/graphql';
-import { GraphQLMutation } from '../lib/graphql';
+import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
+// import { GraphQLMutation } from '../lib/graphql/gqlComponents';
 
 const UserSignup = () => {
   const [email, setEmail] = useState('');
