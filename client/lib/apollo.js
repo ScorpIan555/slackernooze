@@ -7,6 +7,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { AwsAppSyncConfig, AwsAmplifyAuth } from './awsExports';
 
 import { HttpLink, createHttpLink } from 'apollo-link-http';
+
 import { createAuthLink } from 'aws-appsync-auth-link';
 import { ApolloLink } from 'apollo-link';
 
@@ -137,13 +138,13 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
-  const getAwsToken = async () => {
+  const getCredentials = async () => {
     let res = await AwsAmplifyAuth.currentCredentials();
     // console.log('res:::', res.sessionToken);
-    return res.sessionToken;
+    return res;
   };
 
-  let token = getAwsToken();
+  let iamCredentials = getCredentials();
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
@@ -160,7 +161,7 @@ function createApolloClient(initialState = {}) {
   );
   console.log('AwsAppSyncConfig.apiKey', AwsAppSyncConfig.apiKey);
 
-  console.log('AwsAppSyncConfig.token', token);
+  console.log('AwsAppSyncConfig.token', iamCredentials);
 
   // console.log('AppSyncConfig.token', currentCredentials);
 
@@ -185,8 +186,9 @@ function createApolloClient(initialState = {}) {
   let url = AwsAppSyncConfig.graphqlEndpoint;
 
   let auth = {
-    type: AwsAppSyncConfig.authenticationType,
-    apiKey: AwsAppSyncConfig.apiKey
+    // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
+    type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
+    credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
   };
   let region = {
     region: AwsAppSyncConfig.region
@@ -194,9 +196,13 @@ function createApolloClient(initialState = {}) {
 
   // let link = ApolloLink.from([createAuthLink({ url, region, auth })]);
   let link = ApolloLink.from([
+    // https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/packages/aws-appsync-auth-link/src/auth-link.ts
+    //  had to look at the code b/c the examples show'd the arrangement in the auth object
+    //   for authenticationTpe: 'API_KEY', but I wanna use 'AWS_IAM' so per the code... see above
     createAuthLink({ url, region, auth }),
     createHttpLink({ uri: url }) // incl per https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/473
   ]);
+  console.log('auth:::', auth);
 
   return new ApolloClient({
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
