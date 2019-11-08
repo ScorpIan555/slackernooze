@@ -138,13 +138,28 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
-  const getCredentials = async () => {
-    let res = await AwsAmplifyAuth.currentCredentials();
-    // console.log('res:::', res.sessionToken);
-    return res;
+  const getCredentialsAsync = async () => {
+    try {
+      let res = await AwsAmplifyAuth.currentCredentials();
+      console.log('getCredentials.res:::', res);
+      return res;
+    } catch (error) {
+      console.log('getCredentials.catch(error):::', error);
+      console.error('getCredentials.catch(error):::', error);
+    }
   };
 
-  let iamCredentials = getCredentials();
+  const getCredentials = () => {
+    AwsAmplifyAuth.currentCredentials()
+      .then(result => {
+        console.log('getCredentials.result:::', result);
+        return result;
+      })
+      .catch(error => {
+        console.log('getCredentialsError:::', error);
+        console.error(error);
+      });
+  };
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
@@ -161,7 +176,7 @@ function createApolloClient(initialState = {}) {
   );
   console.log('AwsAppSyncConfig.apiKey', AwsAppSyncConfig.apiKey);
 
-  console.log('AwsAppSyncConfig.token', iamCredentials);
+  // console.log('AwsAppSyncConfig.token', iamCredentials);
 
   // console.log('AppSyncConfig.token', currentCredentials);
 
@@ -188,7 +203,8 @@ function createApolloClient(initialState = {}) {
   let auth = {
     // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
     type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
-    credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
+    // credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
+    credentials: getCredentials()
   };
   let region = {
     region: AwsAppSyncConfig.region
