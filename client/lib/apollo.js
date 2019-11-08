@@ -24,6 +24,7 @@ let apolloClient = null;
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent, { ssr = true } = {}) {
+  console.log('WithApollo.PageComponent:::', PageComponent);
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     // memoize apolloClient state
     const client = useMemo(
@@ -51,6 +52,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 
   if (ssr || PageComponent.getInitialProps) {
     WithApollo.getInitialProps = async ctx => {
+      console.log('ctx.err object:::', ctx.err);
       console.log('ctx object:::', ctx);
       const { AppTree } = ctx;
 
@@ -204,7 +206,7 @@ function createApolloClient(initialState = {}) {
     // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
     type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
     // credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
-    credentials: getCredentials()
+    credentials: getCredentialsAsync()
   };
   let region = {
     region: AwsAppSyncConfig.region
@@ -218,7 +220,7 @@ function createApolloClient(initialState = {}) {
     createAuthLink({ url, region, auth }),
     createHttpLink({ uri: url }) // incl per https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/473
   ]);
-  console.log('auth:::', auth);
+  console.log('line222:auth:::', auth);
 
   return new ApolloClient({
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
