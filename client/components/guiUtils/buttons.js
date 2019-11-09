@@ -1,4 +1,4 @@
-// config/buttons.js
+// lib/guiUtils/uttons.js
 
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

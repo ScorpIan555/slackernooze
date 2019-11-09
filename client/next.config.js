@@ -2,14 +2,14 @@
 const withSass = require('@zeit/next-sass');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-const { NODE_ENV, CUSTOM_ENV } = require('./config/config');
+const { NODE_ENV, CUSTOM_ENV } = require('./lib/secrets');
 
 module.exports = withSass();
 
 const configureWebpack = config => {
   config.plugins.push(
     new Dotenv({
-      path: path.join(__dirname, `/secrets/${NODE_ENV}-${CUSTOM_ENV}.env`),
+      path: path.join(__dirname, `/lib/secrets/${NODE_ENV}-${CUSTOM_ENV}.env`),
       // path: path.join(__dirname, `/secrets/${NODE_ENV}.env`),
       safe: true
     })

@@ -25,6 +25,10 @@ let apolloClient = null;
  */
 export function withApollo(PageComponent, { ssr = true } = {}) {
   console.log('WithApollo.PageComponent:::', PageComponent);
+  AwsAmplifyAuth.currentCredentials()
+    .then(results => console.log('apollo.currentCredentials():::', results))
+    .catch(error => console.log('apollo.currentCredentials::', error));
+
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     // memoize apolloClient state
     const client = useMemo(
@@ -204,9 +208,12 @@ function createApolloClient(initialState = {}) {
 
   let auth = {
     // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
-    type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
+    type: 'API_KEY',
+    // apiKey: AwsAppSyncConfig.apiKey,
+    // type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
     // credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
-    credentials: getCredentialsAsync()
+    // type: 'AWS_IAM',
+    credentials: () => AwsAmplifyAuth.currentCredentials()
   };
   let region = {
     region: AwsAppSyncConfig.region

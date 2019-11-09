@@ -12,25 +12,25 @@ AwsAmplify.configure({
 });
 
 class MyApp extends App {
-  // componentDidMount() {
-  //   let fish = AwsAmplifyAuth.currentCredentials()
-  //     .then(result => {
-  //       console.log('fish:::', result);
-  //     })
-  //     .catch(error => {
-  //       console.log('error:::', error);
-  //     });
+  componentDidMount() {
+    let fish = AwsAmplifyAuth.currentCredentials()
+      .then(result => {
+        console.log('fish:::', result);
+      })
+      .catch(error => {
+        console.log('error:::', error);
+      });
 
-  //   AwsAmplifyAuth.currentSession()
-  //     .then(result => {
-  //       console.log('currentSession.result:::', result);
-  //     })
-  //     .catch(error => {
-  //       console.log('error:::', error);
-  //     });
+    AwsAmplifyAuth.currentSession()
+      .then(result => {
+        console.log('currentSession.result:::', result);
+      })
+      .catch(error => {
+        console.log('error:::', error);
+      });
 
-  //   // return fish;
-  // }
+    // return fish;
+  }
 
   // callCompletedPromise = () => {
   //   {
