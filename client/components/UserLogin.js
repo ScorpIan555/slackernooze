@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthRequest } from '../store/index';
 import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
+import { AUTH_TOKEN } from '../lib/secrets';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [login, setLogin] = useState(true);
 
   const [confirmPassword, setConfirmPassword] = useState('');
   const [validateForm, setValidateForm] = useState(false);
@@ -31,6 +34,15 @@ const Login = () => {
     console.log('password:::', password);
   });
 
+  const _confirm = async () => {
+    console.log('_confirm:::', confirm);
+  };
+
+  const _saveUserData = token => {
+    localStorage.setItem(AUTH_TOKEN, token);
+    console.log('token:::', token);
+  };
+
   // const handleInvalidPassword = event => {
   //   event.preventDefault();
 
@@ -43,6 +55,16 @@ const Login = () => {
   return (
     <div>
       <div className="flex flex-column mt3">
+        <div>
+          <input
+            className="mb2"
+            value={name}
+            onChange={event => setName(event.target.value)}
+            type="text"
+            placeholder="name"
+          />
+          <br />
+        </div>
         <div>
           <input
             className="mb2"
@@ -64,11 +86,24 @@ const Login = () => {
           />
         </div>
       </div>
+
+      <div className="flex mt3">
+        <div className="pointer mr2 button" onClick={() => this._confirm()}>
+          {login ? 'login' : 'create account'}
+        </div>
+        <div
+          className="pointer button"
+          onClick={() => setLogin({ login: !login })}
+        >
+          {login ? 'need to create an account?' : 'already have an account?'}
+        </div>
+      </div>
+
       {/* <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
         {postMutation => <button onClick={postMutation}>Submit</button>p}
       </Mutation> */}
       <div>
-        <button onClick={makeRequest}>Submit</button>
+        <button onClick={makeRequest}>Login</button>
       </div>
       {status === FETCHING && (
         <div className="api-request__fetching">Fetching...</div>
@@ -88,4 +123,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;

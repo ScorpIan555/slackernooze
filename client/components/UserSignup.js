@@ -1,34 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { useAuthRequest } from '../store/index';
 import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
 import { Mutation } from 'react-apollo';
 import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
+import { useAuth } from '../lib/contexts';
 // import { GraphQLMutation } from '../lib/graphql/gqlComponents';
 
+const initialState = {
+  email: '',
+  password: '',
+  name: '',
+  confirmPassword: '',
+  validateForm: false
+};
+
+const syncReducer = (state, { field, value }) => {
+  return {
+    ...state,
+    [field]: value
+  };
+};
+
 const UserSignup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [name, setName] = useState('');
 
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
   const [validateForm, setValidateForm] = useState(false);
-  // const [createPost, { loading }] = useMutation(POST_MUTATION);
 
-  const method = 'signUp';
+  // const [createPost, { loading }] = useMutation(POST_MUTATION);
+  // let name, email, password;
+  // let params = {
+  //   name,
+  //   email,
+  //   password
+  // };
+
+  const [state, dispatch] = useReducer(syncReducer, initialState);
+
+  const onChange = event => {
+    console.log('onChange:::', event.target.value);
+    dispatch({ field: event.target.name, value: event.target.value });
+  };
+
+  const { email, password, name, confirmPassword } = state;
+
   let params = {
     name,
     email,
     password
   };
-
   // const handleClick = async event => {
   const [{ status, response }, makeRequest] = useAuthRequest(
     'endpoint',
-    method,
+    'signUp',
     params
   );
 
-  useEffect(() => {});
+  // const userSignUp = async (event, postMutation) => {
+  //   // event.preventDefault();
+  //   // const method = 'signUp';
+  //   // let params = {
+  //   //   name,
+  //   //   email,
+  //   //   password
+  //   // };
+  //   console.log('event:::', event);
+  //   console.log('obj:::', postMutation);
+  //   const auth = useAuth();
+  //   console.log('auth:::', auth);
+  //   const method = 'signUp';
+
+  //   return;
+
+  //   // let params = {
+  //   //   name,
+  //   //   email,
+  //   //   password
+  //   // };
+
+  //   // // const handleClick = async event => {
+  //   // const [{ status, response }, makeRequest] = useAuthRequest(
+  //   //   'endpoint',
+  //   //   'signUp',
+  //   //   params
+  //   // );
+  // };
+
+  const handleClick = (event, postMutation) => {
+    console.log('handleClick.event::', event);
+    console.log('handleClick.postMutation:::', postMutation);
+  };
+
+  // useEffect(() => {
+  //   console.log('auth:::', auth);
+  // });
+
+  // useEffect(() => {
+  //   console.log('state:::', state);
+  // });
 
   useEffect(() => {
     // console.log('password:::', password);
@@ -53,9 +124,11 @@ const UserSignup = () => {
       <div className="flex flex-column mt3">
         <div>
           <input
+            name="name"
             className="mb2"
             value={name}
-            onChange={event => setName(event.target.value)}
+            // onChange={event => setName(event.target.value)}
+            onChange={onChange}
             type="text"
             placeholder="name"
           />
@@ -63,9 +136,11 @@ const UserSignup = () => {
         </div>
         <div>
           <input
+            name="email"
             className="mb2"
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            // onChange={event => setEmail(event.target.value)}
+            onChange={onChange}
             type="text"
             placeholder="email"
           />
@@ -74,20 +149,24 @@ const UserSignup = () => {
 
         <div>
           <input
+            name="password"
             className="mb3"
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            // onChange={event => setPassword(event.target.value)}
+            onChange={onChange}
             type="password"
             placeholder="password"
           />
         </div>
         <div>
           <input
+            name="confirmPassword"
             className="mb3"
             value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
+            // onChange={event => setConfirmPassword(event.target.value)}
+            onChange={onChange}
             type="password"
-            placeholder="password"
+            placeholder="confirm password"
           />
         </div>
       </div>
@@ -97,15 +176,18 @@ const UserSignup = () => {
         mutation={SIGNUP_MUTATION}
         variables={{ name, email, password }}
       >
-        {postMutation => <button onClick={postMutation}>Submit</button>}
+        {postMutation => (
+          <button onClick={handleClick}>Submit in new client flow</button>
+        )}
       </Mutation>
 
       <div>
         {validateForm ? (
           <GraphQLMutation
-            name="userSignup"
+            fieldName="userSignup"
             mutation={SIGNUP_MUTATION}
             variables={{ name, email, password }}
+            handleClick={handleClick}
           />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>

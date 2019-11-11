@@ -15,5 +15,11 @@ function setConfig(time) {
   return setTimeout(config, time);
 }
 
+const AUTH_TOKEN = 'auth-token';
+
 console.log('config.config::::', config);
-module.exports = config;
+
+module.exports = {
+  config,
+  AUTH_TOKEN
+};

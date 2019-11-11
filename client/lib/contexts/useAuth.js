@@ -1,13 +1,34 @@
-import { createContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
+
 const authContext = createContext();
 
 export const ProvideAuth = ({ children }) => {
   const auth = useProvideAuth();
+  console.log('useAuth.auth:::', auth);
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
 };
 
 export const useAuth = () => {
+  console.log('useAuth.authContext:::', authContext);
   return useContext(authContext);
+};
+
+export const useProvideAuth = () => {
+  const [user, setUser] = useState(null);
+
+  const signUp = async obj => {
+    console.log('signUp:::', obj);
+  };
+
+  const signIn = async () => {};
+
+  const signOut = async () => {};
+
+  const sendPasswordResetEmail = async () => {};
+
+  const confirmPasswordReset = async () => {};
+
+  const confirmPassword = async () => {};
 };
 
 // here needs to go the useProvideAuth reducer

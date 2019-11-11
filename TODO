@@ -19,3 +19,7 @@ https://www.apollographql.com/docs/react/api/react-hooks/
 This loks like, at least, a good model to review, the zeit team used it in 
 https://github.com/zeit/next.js/blob/master/examples/with-graphql-hooks/pages/_app.js
 
+
+
+%%%%%%% 11/11
+1) decide which auth flow to use (aws vs localStorage) and knock it out...

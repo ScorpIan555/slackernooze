@@ -24,10 +24,10 @@ let apolloClient = null;
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent, { ssr = true } = {}) {
-  console.log('WithApollo.PageComponent:::', PageComponent);
-  AwsAmplifyAuth.currentCredentials()
-    .then(results => console.log('apollo.currentCredentials():::', results))
-    .catch(error => console.log('apollo.currentCredentials::', error));
+  // console.log('WithApollo.PageComponent:::', PageComponent);
+  // AwsAmplifyAuth.currentCredentials()
+  //   .then(results => console.log('apollo.currentCredentials():::', results))
+  //   .catch(error => console.log('apollo.currentCredentials::', error));
 
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     // memoize apolloClient state

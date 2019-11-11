@@ -3,7 +3,7 @@ import App from 'next/app';
 import Router from 'next/router';
 import Layout from '../components/Layout';
 import { withApollo } from '../lib/apollo';
-// import UserContext from '../components/UserContext';
+import { useAuth, ProvideAuth } from '../lib/contexts';
 import { AwsAuthConfig, AwsAmplify, AwsAmplifyAuth } from '../lib/awsExports';
 
 AwsAmplify.configure({
@@ -52,9 +52,11 @@ class MyApp extends App {
       //     signOut: this.signOut
       //   }}
       // >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ProvideAuth>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ProvideAuth>
     );
   }
 }
