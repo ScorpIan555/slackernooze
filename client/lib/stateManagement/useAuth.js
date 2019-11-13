@@ -1,31 +1,40 @@
 import { createContext, useState, useEffect, useContext } from 'react';
+import Auth from '@aws-amplify/auth';
 
 const authContext = createContext();
 
 export const ProvideAuth = ({ children }) => {
   const auth = useProvideAuth();
   console.log('useAuth.auth:::', auth);
+  console.log('useAuth.children:::', children);
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
-}
+};
 
 export const useAuth = () => {
   console.log('useAuth.authContext:::', authContext);
   return useContext(authContext);
 };
 
-export const useProvideAuth = () => {
+// Have the basic user signin working
+
+// next step w/b getting the session token stuff working
+
+// prob need to get the session token and then stick it into context
+
+function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const signUp = async obj => {
-
+  const signUp = async (method, params) => {
     // authRequest hook frrom store/index uses a direct call to Amplify.Auth & graphQl from component
-    // this file is meant to act as the store, so need to 
-    console.log('signUp:::', obj);
+    // this file is meant to act as the store, so need to
+    const response = await Auth[method](params.email, params.password);
+    response['status'] = 'ok';
+    console.log('response.status::::', response.status);
+    console.log('response:::', response);
+    return response;
   };
 
-  const signIn = async (user) => {
-    
-  };
+  const signIn = async user => {};
 
   const signOut = async () => {};
 
@@ -34,7 +43,18 @@ export const useProvideAuth = () => {
   const confirmPasswordReset = async () => {};
 
   const confirmPassword = async () => {};
-};
+
+  // Return the user object and auth methods
+  return {
+    user,
+    signIn,
+    signUp,
+    signOut,
+    sendPasswordResetEmail,
+    confirmPasswordReset,
+    confirmPassword
+  };
+}
 
 // here needs to go the useProvideAuth reducer
 //      https://usehooks.com/useAuth/
