@@ -1,13 +1,12 @@
 // index.js
 import { useReducer } from 'react';
-import reducer, { initialState } from './reducer';
+import { initialState, asynchronousReducer } from './reducers';
 import { fetching, success, error } from './actionCreators';
 import Auth from '@aws-amplify/auth';
-// import { ConsoleLogger } from '@aws-amplify/core';
 
 // inside useApiRequest function
-const useAuthRequest = (endpoint, method, params) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const useAuthRequest = (method, params) => {
+  const [state, dispatch] = useReducer(asynchronousReducer, initialState);
 
   const makeRequest = async () => {
     console.log('somebody hit make request!');
@@ -25,9 +24,12 @@ const useAuthRequest = (endpoint, method, params) => {
       );
 
       const response = await Auth[method](params.email, params.password);
+      response['status'] = 'ok';
       console.log('Auth.response:::', response);
+      console.log('Auth.response:::' + JSON.stringify(response));
       dispatch(success(response));
     } catch (e) {
+      console.log('error:::', e);
       dispatch(error(e));
     }
   };

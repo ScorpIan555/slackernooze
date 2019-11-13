@@ -6,7 +6,7 @@ export const ProvideAuth = ({ children }) => {
   const auth = useProvideAuth();
   console.log('useAuth.auth:::', auth);
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
-};
+}
 
 export const useAuth = () => {
   console.log('useAuth.authContext:::', authContext);
@@ -17,10 +17,15 @@ export const useProvideAuth = () => {
   const [user, setUser] = useState(null);
 
   const signUp = async obj => {
+
+    // authRequest hook frrom store/index uses a direct call to Amplify.Auth & graphQl from component
+    // this file is meant to act as the store, so need to 
     console.log('signUp:::', obj);
   };
 
-  const signIn = async () => {};
+  const signIn = async (user) => {
+    
+  };
 
   const signOut = async () => {};
 

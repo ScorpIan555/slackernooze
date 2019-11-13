@@ -1,9 +1,8 @@
 import React from 'react';
 import App from 'next/app';
-import Router from 'next/router';
 import Layout from '../components/Layout';
 import { withApollo } from '../lib/apollo';
-import { useAuth, ProvideAuth } from '../lib/contexts';
+import { useAuth, ProvideAuth } from '../lib/stateManagement';
 import { AwsAuthConfig, AwsAmplify, AwsAmplifyAuth } from '../lib/awsExports';
 
 AwsAmplify.configure({
@@ -32,13 +31,6 @@ class MyApp extends App {
     // return fish;
   }
 
-  // callCompletedPromise = () => {
-  //   {
-  //     fish.isFulfilled
-  //       ? console.log('fish:::', fish)
-  //       : console.log('wait_for_it...');
-  //   }
-  // };
 
   render() {
     const { Component, pageProps } = this.props;

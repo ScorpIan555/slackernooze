@@ -1,86 +1,83 @@
 import React, { useState, useEffect, useContext, useReducer } from 'react';
-import { useAuthRequest } from '../store/index';
-import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
+import { useAuthRequest } from '../lib/stateManagement/store/index';
+import {
+  FETCHING,
+  SUCCESS,
+  ERROR
+} from '../lib/stateManagement/store/actionTypes';
+import {
+  asynchronousReducer,
+  synchronousReducer
+} from '../lib/stateManagement';
 import { Mutation } from 'react-apollo';
 import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
-import { useAuth } from '../lib/contexts';
-// import { GraphQLMutation } from '../lib/graphql/gqlComponents';
+import { useAuth } from '../lib/stateManagement';
 
+// set initialState within the component
 const initialState = {
+  // synchronous action/reducer fields
   email: '',
   password: '',
   name: '',
   confirmPassword: '',
-  validateForm: false
-};
-
-const synchronousReducer = (state, { field, value }) => {
-  return {
-    ...state,
-    [field]: value
-  };
+  validateForm: false,
+  method: '',
+  // async action/reducer fields
+  status: null,
+  response: null
 };
 
 const UserSignup = () => {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [name, setName] = useState('');
+  // create validateForm state mgt hooks
 
-  // const [confirmPassword, setConfirmPassword] = useState('');
   const [validateForm, setValidateForm] = useState(false);
-
-  // const [createPost, { loading }] = useMutation(POST_MUTATION);
-  // let name, email, password;
-  // let params = {
-  //   name,
-  //   email,
-  //   password
-  // };
-
+  const [method, setMethod] = useState('');
+  // create state objects for form fields
+  // note: kept separate from form validation as they're using different functions
   const [state, dispatch] = useReducer(synchronousReducer, initialState);
+  // destructure and assign state values
+  const { name, email, password, confirmPassword } = state;
+  // create method variable and params object for auth api call
+  let params = { name, email, password };
+  // initialize hook to call aws api
+  const [{ status, response }, makeRequest] = useAuthRequest(method, params);
 
+  // handle controlled form component
   const onChange = event => {
+    setMethod('signUp');
     console.log('onChange:::', event.target.value);
     dispatch({ field: event.target.name, value: event.target.value });
   };
 
-  const { email, password, name, confirmPassword } = state;
-
-  let params = {
-    name,
-    email,
-    password
+  // signup user
+  const asyncSignUpAction = async event => {
+    console.log('method:::', method);
+    makeRequest(method, params);
   };
-  // const handleClick = async event => {
-  const [{ status, response }, makeRequest] = useAuthRequest(
-    'endpoint',
-    'signUp',
-    params
-  );
 
-  // const handleClick = (event, postMutation) => {
-  //   console.log('handleClick.event::', event);
-  //   console.log('handleClick.postMutation:::', postMutation);
-  // };
+  // signin user
+  const asyncSignInAction = async () => {
+    makeRequest('signIn', params);
+  };
 
+  // signout user
+  const asyncSignOutAction = async () => {
+    makeRequest('signOut', params);
+  };
+
+  // error handler for passwords not matching
+  const handleInvalidPassword = event => {
+    event.preventDefault();
+    alert('Your passwords do not match: YOU SHALL NOT PASS!');
+  };
+
+  // validate password form in create field
   useEffect(() => {
-    // console.log('password:::', password);
-    // console.log('confirmPassword:::', confirmPassword);
-    // console.log('validateForm', validateForm);
     password === confirmPassword && password.length > 0
       ? setValidateForm(true)
       : setValidateForm(false);
   });
 
-  const handleInvalidPassword = event => {
-    event.preventDefault();
-
-    alert('Your passwords do not match: YOU SHALL NOT PASS!');
-  };
-
-  // const handleClick = async event => {
-  //   event.preventDefault();
-  // console.log('event.target:::', event.target);
   return (
     <div>
       <div className="flex flex-column mt3">
@@ -132,24 +129,14 @@ const UserSignup = () => {
           />
         </div>
       </div>
-      <button onClick={makeRequest}>Cheat Bitch!</button>
-
-      <Mutation
-        mutation={SIGNUP_MUTATION}
-        variables={{ name, email, password }}
-      >
-        {postMutation => (
-          <button onClick={makeRequest}>Submit in new client flow</button>
-        )}
-      </Mutation>
 
       <div>
         {validateForm ? (
           <GraphQLMutation
-            fieldName="userSignup"
+            name="signUp"
             mutation={SIGNUP_MUTATION}
             variables={{ name, email, password }}
-            handleAwsCall={makeRequest}
+            handleAwsCall={asyncSignUpAction}
           />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
@@ -160,16 +147,10 @@ const UserSignup = () => {
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-email">{response}</div>
+          <div className="api-request__user-email">{response.status}</div>
         </div>
       )}
-      {status === ERROR && (
-        <div className="api-request__error-container">
-          <div className="api-request__error-response">
-            {JSON.stringify(response)}
-          </div>
-        </div>
-      )}
+      {status === ERROR && alert(response.message)}
     </div>
   );
 };

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthRequest } from '../store/index';
-import { FETCHING, SUCCESS, ERROR } from '../store/actionTypes';
+import { useAuthRequest } from '../lib/stateManagement/store/index';
+import {
+  FETCHING,
+  SUCCESS,
+  ERROR
+} from '../lib/stateManagement/store/actionTypes';
 import { AUTH_TOKEN } from '../lib/secrets';
 
 const Login = () => {
@@ -55,16 +59,6 @@ const Login = () => {
   return (
     <div>
       <div className="flex flex-column mt3">
-        <div>
-          <input
-            className="mb2"
-            value={name}
-            onChange={event => setName(event.target.value)}
-            type="text"
-            placeholder="name"
-          />
-          <br />
-        </div>
         <div>
           <input
             className="mb2"
