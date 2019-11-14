@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
+import { useRouter } from 'next/router';
 import { useAuthRequest } from '../lib/stateManagement/store/index';
 import {
   FETCHING,
@@ -16,7 +17,7 @@ import { useAuth } from '../lib/stateManagement';
 // set initialState within the component
 const initialState = {
   // synchronous action/reducer fields
-  email: '',
+  username: '',
   password: '',
   name: '',
   confirmPassword: '',
@@ -30,40 +31,50 @@ const initialState = {
 const UserSignup = () => {
   // initialize auth object in order to use user mgt
   let auth = useAuth();
+  // initialize router object
+  const router = useRouter();
   // create validateForm state mgt hooks
   const [validateForm, setValidateForm] = useState(false);
   const [method, setMethod] = useState('');
+  const [email, setEmail] = useState('');
   // create state objects for form fields
   // note: kept separate from form validation as they're using different functions
   const [state, dispatch] = useReducer(synchronousReducer, initialState);
   // destructure and assign state values
-  const { name, email, password, confirmPassword } = state;
+  const { name, username, password, confirmPassword } = state;
   // create method variable and params object for auth api call
-  let params = { name, email, password };
+  let params = { name, username, password };
   // initialize hook to call aws api
   const [{ status, response }, makeRequest] = useAuthRequest(method, params);
 
   // handle controlled form component
-  const onChange = event => {
+  const handleOnChange = event => {
+    // need to set method t/b passed to 3rd pary Auth api call
     setMethod('signUp');
-    console.log('onChange:::', event.target.value);
+    console.log('event.target.name:::', event.target.name);
+    console.log('event.target.value:::', event.target.value);
+    // synchronous dispatch
     dispatch({ field: event.target.name, value: event.target.value });
+    if (event.target.name === 'username') {
+      dispatch({ field: email.name, value: event.target.value });
+    }
+    console.log('email:::', email);
   };
 
   // signup user
-  const asyncSignUpAction = async event => {
-    console.log('method:::', method);
-    makeRequest(method, params);
-  };
-
-  // signin user
-  const asyncSignInAction = async () => {
-    makeRequest('signIn', params);
-  };
-
-  // signout user
-  const asyncSignOutAction = async () => {
-    makeRequest('signOut', params);
+  const handleSignUp = async event => {
+    console.log('method/params:::', method, params);
+    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
+    auth.toggleIsUserLoggedInBoolean();
+    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
+    try {
+      await makeRequest(method, params);
+      // navigate back to home page after everything's kosher
+      router.push('/');
+    } catch (error) {
+      console.log('error:::', error.message);
+      console.error(error);
+    }
   };
 
   // error handler for passwords not matching
@@ -71,6 +82,11 @@ const UserSignup = () => {
     event.preventDefault();
     alert('Your passwords do not match: YOU SHALL NOT PASS!');
   };
+
+  useEffect(() => {
+    setEmail(username);
+    console.log('email::', email);
+  });
 
   // validate password form in create field
   useEffect(() => {
@@ -87,22 +103,21 @@ const UserSignup = () => {
             name="name"
             className="mb2"
             value={name}
-            // onChange={event => setName(event.target.value)}
-            onChange={onChange}
+            onChange={handleOnChange}
             type="text"
             placeholder="name"
           />
           <br />
         </div>
+
         <div>
           <input
-            name="email"
+            name="username"
             className="mb2"
-            value={email}
-            // onChange={event => setEmail(event.target.value)}
-            onChange={onChange}
+            value={username}
+            onChange={handleOnChange}
             type="text"
-            placeholder="email"
+            placeholder="username"
           />
           <br />
         </div>
@@ -112,19 +127,18 @@ const UserSignup = () => {
             name="password"
             className="mb3"
             value={password}
-            // onChange={event => setPassword(event.target.value)}
-            onChange={onChange}
+            onChange={handleOnChange}
             type="password"
             placeholder="password"
           />
         </div>
+
         <div>
           <input
             name="confirmPassword"
             className="mb3"
             value={confirmPassword}
-            // onChange={event => setConfirmPassword(event.target.value)}
-            onChange={onChange}
+            onChange={handleOnChange}
             type="password"
             placeholder="confirm password"
           />
@@ -136,8 +150,8 @@ const UserSignup = () => {
           <GraphQLMutation
             name="signUp"
             mutation={SIGNUP_MUTATION}
-            variables={{ name, email, password }}
-            handleAwsCall={asyncSignUpAction}
+            variables={{ name, username, password }}
+            handleAwsCall={handleSignUp}
           />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
@@ -148,29 +162,12 @@ const UserSignup = () => {
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-email">{response.status}</div>
+          <div className="api-request__user-username">{response.status}</div>
         </div>
       )}
       {status === ERROR && alert(response.message)}
     </div>
   );
 };
-// };
 
 export default UserSignup;
-
-// {/* {status === FETCHING && (
-//     <div className="api-request__fetching">Fetching...</div>
-//   )}
-//   {status === SUCCESS && (
-//     <div className="api-request__user-info-container">
-//       <div className="api-request__user-email">SUCCESS</div>
-//     </div>
-//   )}
-//   {status === ERROR && (
-//     <div className="api-request__error-container">
-//       <div className="api-request__error-response">
-//         {JSON.stringify(response)}
-//       </div>
-//     </div>
-//   )} */}

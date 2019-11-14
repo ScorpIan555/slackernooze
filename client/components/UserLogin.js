@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
+import { useRouter } from 'next/router';
 import { useAuthRequest } from '../lib/stateManagement/store/index';
 import {
   FETCHING,
@@ -6,10 +7,34 @@ import {
   ERROR
 } from '../lib/stateManagement/store/actionTypes';
 import { AUTH_TOKEN } from '../lib/secrets';
+import { useAuth } from '../lib/stateManagement';
+import {
+  asynchronousReducer,
+  synchronousReducer
+} from '../lib/stateManagement';
+import { Mutation } from 'react-apollo';
+import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
+
+// set initialState within the component
+const initialState = {
+  // synchronous action/reducer fields
+  email: '',
+  password: '',
+  name: '',
+  confirmPassword: '',
+  validateForm: false,
+  method: '',
+  // async action/reducer fields
+  status: null,
+  response: null
+};
 
 const Login = () => {
+  // initialize auth object in order to use user mgt
+  let auth = useAuth();
+  // initialize router object
+  const router = useRouter();
   // create validateForm state mgt hooks
-
   const [validateForm, setValidateForm] = useState(false);
   const [method, setMethod] = useState('');
   // create state objects for form fields
@@ -23,16 +48,25 @@ const Login = () => {
   const [{ status, response }, makeRequest] = useAuthRequest(method, params);
 
   // handle controlled form component
-  const onChange = event => {
+  const handleOnChange = event => {
     setMethod('signUp');
     console.log('onChange:::', event.target.value);
     dispatch({ field: event.target.name, value: event.target.value });
   };
 
   // signup user
-  const asyncSignInAction = async event => {
-    console.log('method:::', method);
-    makeRequest(method, params);
+  const handleSignIn = async event => {
+    console.log('method/params:::', method, params);
+    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
+    auth.toggleIsUserLoggedInBoolean();
+    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
+    try {
+      await makeRequest(method, params);
+      router.push('/');
+    } catch (error) {
+      console.log('error:::', error.message);
+      console.error(error);
+    }
   };
 
   const _confirm = async () => {
@@ -44,15 +78,6 @@ const Login = () => {
     console.log('token:::', token);
   };
 
-  // const handleInvalidPassword = event => {
-  //   event.preventDefault();
-
-  //   alert('Your passwords do not match: YOU SHALL NOT PASS!');
-  // };
-
-  // const handleClick = async event => {
-  //   event.preventDefault();
-  // console.log('event.target:::', event.target);
   return (
     <div>
       <div className="flex flex-column mt3">
@@ -60,7 +85,8 @@ const Login = () => {
           <input
             className="mb2"
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            // onChange={event => setEmail(event.target.value)}
+            onChange={handleOnChange}
             type="text"
             placeholder="email"
           />
@@ -71,7 +97,8 @@ const Login = () => {
           <input
             className="mb3"
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            // onChange={event => setPassword(event.target.value)}
+            onChange={handleOnChange}
             type="password"
             placeholder="password"
           />
@@ -79,15 +106,15 @@ const Login = () => {
       </div>
 
       <div className="flex mt3">
-        <div className="pointer mr2 button" onClick={() => this._confirm()}>
+        {/* <div className="pointer mr2 button" onClick={() => this._confirm()}>
           {login ? 'login' : 'create account'}
-        </div>
-        <div
+        </div> */}
+        {/* <div
           className="pointer button"
           onClick={() => setLogin({ login: !login })}
         >
           {login ? 'need to create an account?' : 'already have an account?'}
-        </div>
+        </div> */}
       </div>
 
       {/* <Mutation mutation={POST_MUTATION} variables={{ description, url }}>

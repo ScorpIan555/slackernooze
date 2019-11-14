@@ -11,26 +11,45 @@ AwsAmplify.configure({
 });
 
 class MyApp extends App {
+  state = {
+    cachedAuth: {}
+  };
+
   componentDidMount() {
-    let fish = AwsAmplifyAuth.currentCredentials()
+    AwsAmplifyAuth.currentCredentials()
       .then(result => {
         console.log('fish:::', result);
+        let cachedResult = result;
+        this.setState({
+          cachedAuth: cachedResult
+        });
+        return cachedResult;
+
+        //  cachedResult
       })
       .catch(error => {
         console.log('error:::', error);
       });
 
-    AwsAmplifyAuth.currentSession()
-      .then(result => {
-        console.log('currentSession.result:::', result);
-      })
-      .catch(error => {
-        console.log('error:::', error);
-      });
-
-    // return fish;
+    // AwsAmplifyAuth.currentSession()
+    //   .then(result => {
+    //     console.log('currentSession.result:::', result);
+    //   })
+    //   .catch(error => {
+    //     console.log('error:::', error);
+    //   });
   }
 
+  componentDidCatch(error, errorInfo) {
+    console.log('Custom error handling!:::', error);
+    // This is needed to render errors correctly in dev/prod
+    super.componentDidCatch(error, errorInfo);
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('prevProps::::', prevProps);
+    console.log('this.props:::', this.props);
+  }
 
   render() {
     const { Component, pageProps } = this.props;

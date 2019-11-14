@@ -1,17 +1,17 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 import Auth from '@aws-amplify/auth';
 
 const authContext = createContext();
 
 export const ProvideAuth = ({ children }) => {
+  // initialize an value for the initial application state
   const auth = useProvideAuth();
-  console.log('useAuth.auth:::', auth);
-  console.log('useAuth.children:::', children);
+  // return the app's auth state wrapper
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
 };
 
 export const useAuth = () => {
-  console.log('useAuth.authContext:::', authContext);
+  // wrap and return the context initialized at the top
   return useContext(authContext);
 };
 
@@ -25,24 +25,41 @@ function useProvideAuth() {
   const [user, setUser] = useState(null);
 
   let isUserLoggedIn = false;
+  let sessionToken = '';
 
   const toggleIsUserLoggedInBoolean = () => {
+    console.log('toggleIsUserLoggedInBoolean:::', isUserLoggedIn);
     return !isUserLoggedIn;
   };
 
-  const signUp = async (method, params) => {
-    // authRequest hook frrom store/index uses a direct call to Amplify.Auth & graphQl from component
-    // this file is meant to act as the store, so need to
-    const response = await Auth[method](params.email, params.password);
-    response['status'] = 'ok';
-    console.log('response.status::::', response.status);
-    console.log('response:::', response);
-    return response;
+  const authRequestCall = async (method, params) => {
+    try {
+      const response = await Auth[method](params);
+      response['status'] = 'ok';
+      console.log('response.status::::', response.status);
+      console.log('response:::', response);
+      return response;
+    } catch (error) {
+      console.log('error:::', error);
+      alert(error.message);
+    }
   };
 
-  const signIn = async user => {};
+  const signUp = (method, params) => {
+    return authRequestCall(method, params);
+  };
 
-  const signOut = async () => {};
+  const confirmSignUp = (method, params) => {
+    return authRequestCall(method, params);
+  };
+
+  const signIn = (method, params) => {
+    return authRequestCall(method, params);
+  };
+
+  const signOut = (method, params) => {
+    return authRequestCall(method, params);
+  };
 
   const sendPasswordResetEmail = async () => {};
 
@@ -52,6 +69,7 @@ function useProvideAuth() {
 
   // Return the user object and auth methods
   return {
+    sessionToken,
     user,
     signIn,
     signUp,
@@ -60,9 +78,25 @@ function useProvideAuth() {
     confirmPasswordReset,
     confirmPassword,
     isUserLoggedIn,
-    toggleIsUserLoggedInBoolean
+    toggleIsUserLoggedInBoolean,
+    confirmSignUp
   };
 }
+
+// Aws Amplify Auth built in methods
+// https://aws-amplify.github.io/docs/js/authentication
+
+// Auth.changePassword
+// Auth.completeNewPassword
+// Auth.confirmSignIn
+// Auth.confirmSignUp
+// Auth.forgotPasswordSubmit
+// Auth.resendSignUp
+// Auth.sendCustomChallengeAnswer
+// Auth.signIn
+// Auth.signUp
+// Auth.updateUserAttributes
+// Auth.verifyUserAttribute
 
 // here needs to go the useProvideAuth reducer
 //      https://usehooks.com/useAuth/

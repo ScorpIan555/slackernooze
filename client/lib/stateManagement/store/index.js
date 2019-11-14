@@ -13,20 +13,15 @@ const useAuthRequest = (method, params) => {
     console.log('somebody hit make request!');
     const reqString = `${method}(${params.email}, ${params.password})`;
     console.log('reqString::::', reqString);
+    console.log('auth in index:::', auth);
 
     dispatch(fetching());
     try {
-      // //   const response = await axios[verb](endpoint, params);
-      // console.log(
-      //   'Auth[method](params.email), params.password)::: ',
-      //   method,
-      //   params.email,
-      //   params.password
-      // );
-
-      let response = await auth.signUp(method, params);
+      let response = await auth[method](method, params);
+      // capture user object returned from request, enter into app state
       console.log('Auth.response:::', response);
-      console.log('Auth.response:::' + JSON.stringify(response));
+      console.log('auth obj after Auth.response:::', auth);
+      auth['user'] = response.user;
       dispatch(success(response));
     } catch (e) {
       console.log('error:::', e);
