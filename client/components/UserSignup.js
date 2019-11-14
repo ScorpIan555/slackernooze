@@ -28,8 +28,9 @@ const initialState = {
 };
 
 const UserSignup = () => {
+  // initialize auth object in order to use user mgt
+  let auth = useAuth();
   // create validateForm state mgt hooks
-
   const [validateForm, setValidateForm] = useState(false);
   const [method, setMethod] = useState('');
   // create state objects for form fields

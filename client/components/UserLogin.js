@@ -8,35 +8,32 @@ import {
 import { AUTH_TOKEN } from '../lib/secrets';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [login, setLogin] = useState(true);
+  // create validateForm state mgt hooks
 
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [validateForm, setValidateForm] = useState(false);
-  // const [createPost, { loading }] = useMutation(POST_MUTATION);
+  const [method, setMethod] = useState('');
+  // create state objects for form fields
+  // note: kept separate from form validation as they're using different functions
+  const [state, dispatch] = useReducer(synchronousReducer, initialState);
+  // destructure and assign state values
+  const { name, email, password, confirmPassword } = state;
+  // create method variable and params object for auth api call
+  let params = { name, email, password };
+  // initialize hook to call aws api
+  const [{ status, response }, makeRequest] = useAuthRequest(method, params);
 
-  const method = 'signIn';
-  let params = {
-    email,
-    password
+  // handle controlled form component
+  const onChange = event => {
+    setMethod('signUp');
+    console.log('onChange:::', event.target.value);
+    dispatch({ field: event.target.name, value: event.target.value });
   };
 
-  // const handleClick = async event => {
-  const [{ status, response }, makeRequest] = useAuthRequest(
-    'endpoint',
-    method,
-    params
-  );
-
-  useEffect(() => {
-    console.log('email:::', email);
-  });
-
-  useEffect(() => {
-    console.log('password:::', password);
-  });
+  // signup user
+  const asyncSignInAction = async event => {
+    console.log('method:::', method);
+    makeRequest(method, params);
+  };
 
   const _confirm = async () => {
     console.log('_confirm:::', confirm);

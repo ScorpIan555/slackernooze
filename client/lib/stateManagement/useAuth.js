@@ -24,6 +24,12 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
+  let isUserLoggedIn = false;
+
+  const toggleIsUserLoggedInBoolean = () => {
+    return !isUserLoggedIn;
+  };
+
   const signUp = async (method, params) => {
     // authRequest hook frrom store/index uses a direct call to Amplify.Auth & graphQl from component
     // this file is meant to act as the store, so need to
@@ -52,7 +58,9 @@ function useProvideAuth() {
     signOut,
     sendPasswordResetEmail,
     confirmPasswordReset,
-    confirmPassword
+    confirmPassword,
+    isUserLoggedIn,
+    toggleIsUserLoggedInBoolean
   };
 }
 
