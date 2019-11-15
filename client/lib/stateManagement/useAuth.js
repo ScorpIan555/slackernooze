@@ -37,7 +37,17 @@ function useProvideAuth() {
 
   const handleAuthRequestApiCall = async (method, params) => {
     try {
-      const response = await Auth[method](params);
+      let response;
+
+      // the 'confirmUserSignUp' flow does not require a state update
+      if (method === 'confirmSignUp') {
+        console.log('within confirmUser.method.params:::', method, params);
+        response = await Auth[method](params.username, params.code);
+        // response['status'] = 'ok';
+        console.log('response from confirm user:::', response);
+        return response;
+      }
+      response = await Auth[method](params);
       response['status'] = 'ok';
       let responseUser = response.user;
       handleAuthStateUpdate(responseUser);

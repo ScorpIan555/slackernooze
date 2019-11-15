@@ -16,13 +16,15 @@ const useAuthRequest = (method, params) => {
   const auth = useAuth();
 
   const makeRequest = async () => {
-    console.log('somebody hit make request!');
+    console.log('somebody hit make request!', params);
     const reqString = `${method}(${params.email}, ${params.password})`;
     console.log('reqString::::', reqString);
     console.log('auth in index:::', auth);
 
     dispatch(fetching());
     try {
+      console.log('somebody hit make request!', method);
+      console.log('somebody hit make request!', params);
       let response = await auth[method](method, params);
       // capture user object returned from request, enter into app state
       dispatch(success(response));

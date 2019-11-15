@@ -58,8 +58,8 @@ const UserSignup = () => {
       await makeRequest(method, params);
       // toggle client state to indicate that a user is now signed in
       // navigate back to home page after everything's kosher
-      auth.toggleIsLoggedInBoolean();
-      router.push('/');
+      // auth.toggleIsLoggedInBoolean();
+      router.push('/confirmUser');
     } catch (error) {
       console.log('error:::', error.message);
       console.error(error);
@@ -74,6 +74,7 @@ const UserSignup = () => {
 
   useEffect(() => {
     setEmail(username);
+    auth['usernameFromSignUp'] = username;
   });
 
   useEffect(() => {
