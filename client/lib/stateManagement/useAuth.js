@@ -23,42 +23,58 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sessionToken, setSessionToken] = useState('');
 
-  let isUserLoggedIn = false;
-  let sessionToken = '';
-
-  const toggleIsUserLoggedInBoolean = () => {
-    console.log('toggleIsUserLoggedInBoolean:::', isUserLoggedIn);
-    return !isUserLoggedIn;
+  const toggleIsLoggedInBoolean = () => {
+    return setIsLoggedIn(!isLoggedIn);
   };
 
-  const authRequestCall = async (method, params) => {
+  /* 
+    app api & state management handlers
+  
+  */
+
+  const handleAuthRequestApiCall = async (method, params) => {
     try {
       const response = await Auth[method](params);
       response['status'] = 'ok';
+      let responseUser = response.user;
+      handleAuthStateUpdate(responseUser);
       console.log('response.status::::', response.status);
       console.log('response:::', response);
-      return response;
+      console.log('auth after response/state update:::', responseUser);
+      return responseUser;
     } catch (error) {
       console.log('error:::', error);
       alert(error.message);
     }
   };
 
+  const handleAuthStateUpdate = responseUser => {
+    return setUser(responseUser);
+  };
+
+  /* auth store methods 
+
+
+
+  */
+
   const signUp = (method, params) => {
-    return authRequestCall(method, params);
+    return handleAuthRequestApiCall(method, params);
   };
 
   const confirmSignUp = (method, params) => {
-    return authRequestCall(method, params);
+    return handleAuthRequestApiCall(method, params);
   };
 
   const signIn = (method, params) => {
-    return authRequestCall(method, params);
+    return handleAuthRequestApiCall(method, params);
   };
 
   const signOut = (method, params) => {
-    return authRequestCall(method, params);
+    return handleAuthRequestApiCall(method, params);
   };
 
   const sendPasswordResetEmail = async () => {};
@@ -77,8 +93,8 @@ function useProvideAuth() {
     sendPasswordResetEmail,
     confirmPasswordReset,
     confirmPassword,
-    isUserLoggedIn,
-    toggleIsUserLoggedInBoolean,
+    isLoggedIn,
+    toggleIsLoggedInBoolean,
     confirmSignUp
   };
 }

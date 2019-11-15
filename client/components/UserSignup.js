@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { useRouter } from 'next/router';
-import { useAuthRequest } from '../lib/stateManagement/store/index';
+import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
 import {
+  useAuth,
+  useAuthRequest,
+  synchronousReducer,
   FETCHING,
   SUCCESS,
   ERROR
-} from '../lib/stateManagement/store/actionTypes';
-import {
-  asynchronousReducer,
-  synchronousReducer
 } from '../lib/stateManagement';
-import { Mutation } from 'react-apollo';
-import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
-import { useAuth } from '../lib/stateManagement';
 
 // set initialState within the component
 const initialState = {
@@ -51,25 +47,18 @@ const UserSignup = () => {
   const handleOnChange = event => {
     // need to set method t/b passed to 3rd pary Auth api call
     setMethod('signUp');
-    console.log('event.target.name:::', event.target.name);
-    console.log('event.target.value:::', event.target.value);
     // synchronous dispatch
     dispatch({ field: event.target.name, value: event.target.value });
-    if (event.target.name === 'username') {
-      dispatch({ field: email.name, value: event.target.value });
-    }
-    console.log('email:::', email);
   };
 
   // signup user
   const handleSignUp = async event => {
-    console.log('method/params:::', method, params);
-    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
-    auth.toggleIsUserLoggedInBoolean();
-    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
     try {
+      // call the auth api, update client state
       await makeRequest(method, params);
+      // toggle client state to indicate that a user is now signed in
       // navigate back to home page after everything's kosher
+      auth.toggleIsLoggedInBoolean();
       router.push('/');
     } catch (error) {
       console.log('error:::', error.message);
@@ -85,7 +74,11 @@ const UserSignup = () => {
 
   useEffect(() => {
     setEmail(username);
-    console.log('email::', email);
+  });
+
+  useEffect(() => {
+    console.log('effect-auth:::', auth);
+    console.log('effect-auth:::', auth['user']);
   });
 
   // validate password form in create field
@@ -162,7 +155,9 @@ const UserSignup = () => {
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-username">{response.status}</div>
+          {response != undefined || null ? (
+            <div className="api-request__user-username">{response.status}</div>
+          ) : null}
         </div>
       )}
       {status === ERROR && alert(response.message)}

@@ -1,24 +1,19 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { useRouter } from 'next/router';
-import { useAuthRequest } from '../lib/stateManagement/store/index';
+import { AUTH_TOKEN } from '../lib/secrets';
 import {
+  useAuth,
+  useAuthRequest,
+  synchronousReducer,
   FETCHING,
   SUCCESS,
   ERROR
-} from '../lib/stateManagement/store/actionTypes';
-import { AUTH_TOKEN } from '../lib/secrets';
-import { useAuth } from '../lib/stateManagement';
-import {
-  asynchronousReducer,
-  synchronousReducer
 } from '../lib/stateManagement';
-import { Mutation } from 'react-apollo';
-import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
 
 // set initialState within the component
 const initialState = {
   // synchronous action/reducer fields
-  email: '',
+  username: '',
   password: '',
   name: '',
   confirmPassword: '',
@@ -37,31 +32,32 @@ const Login = () => {
   // create validateForm state mgt hooks
   const [validateForm, setValidateForm] = useState(false);
   const [method, setMethod] = useState('');
+  const [email, setEmail] = useState('');
   // create state objects for form fields
   // note: kept separate from form validation as they're using different functions
   const [state, dispatch] = useReducer(synchronousReducer, initialState);
   // destructure and assign state values
-  const { name, email, password, confirmPassword } = state;
+  const { name, username, password, confirmPassword } = state;
   // create method variable and params object for auth api call
-  let params = { name, email, password };
+  let params = { name, username, password };
   // initialize hook to call aws api
   const [{ status, response }, makeRequest] = useAuthRequest(method, params);
 
   // handle controlled form component
   const handleOnChange = event => {
-    setMethod('signUp');
+    setMethod('signIn');
     console.log('onChange:::', event.target.value);
     dispatch({ field: event.target.name, value: event.target.value });
   };
 
   // signup user
   const handleSignIn = async event => {
-    console.log('method/params:::', method, params);
-    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
-    auth.toggleIsUserLoggedInBoolean();
-    console.log('isUserToggledIn???:::', auth.isUserLoggedIn);
     try {
+      // call the auth api, update client state
       await makeRequest(method, params);
+      // toggle client state to indicate that a user is now signed in
+      // navigate back to home page after everything's kosher
+      auth.toggleIsLoggedInBoolean();
       router.push('/');
     } catch (error) {
       console.log('error:::', error.message);
@@ -78,26 +74,31 @@ const Login = () => {
     console.log('token:::', token);
   };
 
+  useEffect(() => {
+    setEmail(username);
+    console.log('email::', username);
+  });
+
   return (
     <div>
       <div className="flex flex-column mt3">
         <div>
           <input
+            name="username"
             className="mb2"
-            value={email}
-            // onChange={event => setEmail(event.target.value)}
+            value={username}
             onChange={handleOnChange}
             type="text"
-            placeholder="email"
+            placeholder="username"
           />
           <br />
         </div>
 
         <div>
           <input
+            name="password"
             className="mb3"
             value={password}
-            // onChange={event => setPassword(event.target.value)}
             onChange={handleOnChange}
             type="password"
             placeholder="password"
@@ -105,21 +106,6 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="flex mt3">
-        {/* <div className="pointer mr2 button" onClick={() => this._confirm()}>
-          {login ? 'login' : 'create account'}
-        </div> */}
-        {/* <div
-          className="pointer button"
-          onClick={() => setLogin({ login: !login })}
-        >
-          {login ? 'need to create an account?' : 'already have an account?'}
-        </div> */}
-      </div>
-
-      {/* <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
-        {postMutation => <button onClick={postMutation}>Submit</button>p}
-      </Mutation> */}
       <div>
         <button onClick={makeRequest}>Login</button>
       </div>
@@ -128,13 +114,15 @@ const Login = () => {
       )}
       {status === SUCCESS && (
         <div className="api-request__user-info-container">
-          <div className="api-request__user-email">{response.data.email}</div>
+          {response != undefined || null ? (
+            <div className="api-request__user-username">{response.status}</div>
+          ) : null}
         </div>
       )}
       {status === ERROR && (
         <div className="api-request__error-container">
           <div className="api-request__error-response">
-            {JSON.stringify(response)}
+            {JSON.stringify(response.message)}
           </div>
         </div>
       )}

@@ -1,4 +1,15 @@
 import { useAuth, ProvideAuth } from './useAuth';
-import { synchronousReducer, asynchronousReducer } from './store/reducers';
+import { useAuthRequest, FETCHING, SUCCESS, ERROR } from './store';
+import { initialState, asynchronousReducer, synchronousReducer } from './store';
 
-export { useAuth, ProvideAuth, synchronousReducer, asynchronousReducer };
+export {
+  useAuth,
+  ProvideAuth,
+  initialState,
+  asynchronousReducer,
+  synchronousReducer,
+  useAuthRequest,
+  FETCHING,
+  SUCCESS,
+  ERROR
+};

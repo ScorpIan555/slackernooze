@@ -1,7 +1,13 @@
+import { FETCHING, SUCCESS, ERROR } from './actionTypes';
+import { fetching, success, error } from './actionCreators';
+import {
+  initialState,
+  asynchronousReducer,
+  synchronousReducer
+} from './reducers';
+
 // index.js
 import { useReducer } from 'react';
-import { initialState, asynchronousReducer } from './reducers';
-import { fetching, success, error } from './actionCreators';
 import { useAuth } from '../useAuth';
 
 // inside useApiRequest function
@@ -19,9 +25,6 @@ const useAuthRequest = (method, params) => {
     try {
       let response = await auth[method](method, params);
       // capture user object returned from request, enter into app state
-      console.log('Auth.response:::', response);
-      console.log('auth obj after Auth.response:::', auth);
-      auth['user'] = response.user;
       dispatch(success(response));
     } catch (e) {
       console.log('error:::', e);
@@ -31,4 +34,15 @@ const useAuthRequest = (method, params) => {
 
   return [state, makeRequest];
 };
-export { useAuthRequest };
+export {
+  useAuthRequest,
+  FETCHING,
+  SUCCESS,
+  ERROR,
+  fetching,
+  success,
+  error,
+  asynchronousReducer,
+  synchronousReducer,
+  initialState
+};
