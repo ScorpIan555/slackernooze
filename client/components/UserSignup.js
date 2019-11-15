@@ -150,7 +150,7 @@ const UserSignup = () => {
           <GraphQLMutation
             name="signUp"
             mutation={SIGNUP_MUTATION}
-            variables={{ name, username, password }}
+            variables={{ name, email, password }}
             handleAwsCall={handleSignUp}
           />
         ) : (

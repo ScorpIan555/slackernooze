@@ -9,7 +9,9 @@ const GraphQLMutation = ({ mutation, variables, handleAwsCall }) => {
       {handleMutation => (
         <button
           onClick={() => {
-            handleAwsCall();
+            {
+              handleAwsCall != null ? handleAwsCall() : null;
+            }
             handleMutation();
           }}
         >
