@@ -9,6 +9,7 @@ import {
   SUCCESS,
   ERROR
 } from '../lib/stateManagement';
+import { GraphQLMutation, LOGIN_MUTATION } from '../lib/graphql';
 
 // set initialState within the component
 const initialState = {
@@ -67,6 +68,17 @@ const Login = () => {
 
   const _confirm = async () => {
     console.log('_confirm:::', confirm);
+
+    // per the tutorial, this is a callback that gets the token after the mutation
+    // this would be like what i need to do with the getSession() call
+    // from the getSession() call, I the would need to set the token
+    
+    //
+    //
+
+    // const { token } = this.state.login ? data.login : data.signup;
+    // this._saveUserData(token);
+    // this.props.history.push(`/`);
   };
 
   const _saveUserData = token => {
@@ -108,6 +120,15 @@ const Login = () => {
 
       <div>
         <button onClick={handleSignIn}>Login</button>
+      </div>
+      <div>
+        <GraphQLMutation
+          name="signIn"
+          mutation={LOGIN_MUTATION}
+          variables={{ email, password }}
+          handleAwsCall={handleSignIn}
+          onCompleted={data => _confirm(data)}
+        />
       </div>
       {status === FETCHING && (
         <div className="api-request__fetching">Fetching...</div>

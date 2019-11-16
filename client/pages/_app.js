@@ -1,27 +1,31 @@
 import React from 'react';
 import App from 'next/app';
 import Layout from '../components/Layout';
-import { withApollo } from '../lib/apollo';
-import { useAuth, ProvideAuth } from '../lib/stateManagement';
-import { AwsAuthConfig, AwsAmplify, AwsAmplifyAuth } from '../lib/awsExports';
+import { withApollo } from '../lib/apollo'; // apollo client wrapper
+import { ProvideAuth } from '../lib/stateManagement'; // client-side auth using React.context (+ custom hooks)
+import {
+  AwsAuthConfig,
+  AwsAmplify,
+  AwsAmplifyAuth as AuthInstance
+} from '../lib/awsExports'; // Aws-amplify api modules
 
-AwsAmplify.configure({
-  //  // uncomment when client-api troubleshooting is done
-  Auth: AwsAuthConfig.Auth // AWS Amplify Cognito authorization module
-});
+// initialize instance of AWS Amplify Auth module
+AwsAmplify.configure({ Auth: AwsAuthConfig.Auth });
 
+// per: https://github.com/zeit/next.js/pull/9268
+// this is no longer required to be a class component
 class MyApp extends App {
   state = {
-    cachedAuth: {}
+    cachedCurrentCreds: {}
   };
 
   componentDidMount() {
-    AwsAmplifyAuth.currentCredentials()
+    AuthInstance.currentCredentials()
       .then(result => {
         console.log('fish:::', result);
         let cachedResult = result;
         this.setState({
-          cachedAuth: cachedResult
+          cachedCurrentCreds: cachedResult
         });
         return cachedResult;
 
@@ -31,14 +35,28 @@ class MyApp extends App {
         console.log('error:::', error);
       });
 
-    // AwsAmplifyAuth.currentSession()
-    //   .then(result => {
-    //     console.log('currentSession.result:::', result);
-    //   })
-    //   .catch(error => {
-    //     console.log('error:::', error);
-    //   });
+    AuthInstance.currentSession()
+      .then(result => {
+        console.log('currentSession.result:::', result);
+        let cachedResult = result;
+        this.setState({
+          cachedCurrentSession: cachedResult
+        });
+        return cachedResult;
+      })
+      .catch(error => {
+        console.log('error:::', error);
+      });
+
+    // console.log('req.headers.host:::', req.headers.host);
   }
+
+  logShit = () => {
+    console.log('window.location:::', window);
+    console.log('window.location:::', window.location);
+    console.log('window.document.localStorage;::', window.localStorage);
+    console.log('this.state:::', this.state);
+  };
 
   componentDidCatch(error, errorInfo) {
     console.log('Custom error handling!:::', error);
@@ -47,22 +65,15 @@ class MyApp extends App {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('prevProps::::', prevProps);
-    console.log('this.props:::', this.props);
+    // console.log('prevProps::::', prevProps);
+    // console.log('this.props:::', this.props);
   }
 
   render() {
     const { Component, pageProps } = this.props;
-    console.log('_app.js -- this.props:::', this.props);
+    // console.log('_app.js -- this.props:::', this.props);
 
     return (
-      // <UserContext.Provider
-      //   value={{
-      //     user: this.state.user,
-      //     signIn: this.signIn,
-      //     signOut: this.signOut
-      //   }}
-      // >
       <ProvideAuth>
         <Layout>
           <Component {...pageProps} />

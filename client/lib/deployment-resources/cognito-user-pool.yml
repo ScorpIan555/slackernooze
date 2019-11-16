@@ -5,7 +5,8 @@ Resources:
       # Generate a name based on the stage
       UserPoolName: slackernooze-user-pool${self:custom.stage}
       # Set email as an alias
-      UsernameAttributes:
+      UsernameAttributes: # attributes accessed on CognitoUser.attributes object
+        # https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
         - email
       AutoVerifiedAttributes:
         - email

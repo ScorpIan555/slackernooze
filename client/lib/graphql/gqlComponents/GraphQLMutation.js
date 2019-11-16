@@ -1,6 +1,11 @@
 import { Mutation } from 'react-apollo';
 
-const GraphQLMutation = ({ mutation, variables, handleAwsCall }) => {
+const GraphQLMutation = ({
+  mutation,
+  variables,
+  handleAwsCall,
+  onCompleted
+}) => {
   console.log('variables::', variables);
   console.log('mutation:::', mutation);
 
@@ -8,6 +13,7 @@ const GraphQLMutation = ({ mutation, variables, handleAwsCall }) => {
     <Mutation mutation={mutation} variables={variables}>
       {handleMutation => (
         <button
+          className="pointer mr2 button"
           onClick={() => {
             {
               handleAwsCall != null ? handleAwsCall() : null;

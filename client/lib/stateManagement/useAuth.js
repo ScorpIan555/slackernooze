@@ -12,6 +12,7 @@ export const ProvideAuth = ({ children }) => {
 
 export const useAuth = () => {
   // wrap and return the context initialized at the top
+
   return useContext(authContext);
 };
 
@@ -22,7 +23,7 @@ export const useAuth = () => {
 // prob need to get the session token and then stick it into context
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // user object to share in client app
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sessionToken, setSessionToken] = useState('');
 
@@ -35,40 +36,58 @@ function useProvideAuth() {
   
   */
 
+  // handle the request to Aws/Cognito resource
   const handleAuthRequestApiCall = async (method, params) => {
     try {
+      // 1)
+      // initialize block variables
       let response;
       let responseUser;
+      let responseSessionToken;
 
-      // the 'confirmUserSignUp' flow does not require a state update
+      // 2)
+      // call Aws Cognito resource
+
+      // 'confirmUserSignUp' should use this block
+      // 'confirmUserSignUp' flow should not update state, it's a simple req/res
       if (method === 'confirmSignUp') {
-        console.log('within confirmUser.method.params:::', method, params);
         response = await Auth[method](params.username, params.code);
         // response['status'] = 'ok';
-        console.log('response from confirm user:::', response);
         return response;
       }
+
+      // 'signUp', 'signIn', 'signOut' should use the below block
       response = await Auth[method](params);
-      {
-        response != null || undefined ? (response['status'] = 'ok') : null;
-      }
-      {
-        response != null || undefined ? (responseUser = response.user) : null;
-      }
 
-      handleAuthStateUpdate(responseUser);
+      // 3)
+      // update client state
+      //
 
-      console.log('response:::', response);
-      console.log('auth after response/state update:::', responseUser);
-      return responseUser;
+      // 'signOut' method returns no response object, skip right to state update
+      if (method != 'signOut') {
+        // capture the CognitoUser.attributes object w/ the default UserPool attributes returned from auth
+        //   enter those into application state (custom attributes can be added per the below)
+        //   https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html
+
+        response['status'] = 'ok';
+        responseUser = response.attributes;
+        responseSessionToken = response.signInUserSession.accessToken.jwtToken;
+      }
+      // with response successfully received, update application state with user & session info
+      handleAuthStateUpdate(responseUser, responseSessionToken);
+
+      console.log('auth after response/state update:::', response);
+      return { responseUser, responseSessionToken };
     } catch (error) {
       console.log('error:::', error);
       alert(error.message);
     }
   };
 
-  const handleAuthStateUpdate = responseUser => {
-    return setUser(responseUser);
+  const handleAuthStateUpdate = (responseUser, responseSessionToken) => {
+    setUser(responseUser);
+    setSessionToken(responseSessionToken);
+    return;
   };
 
   /* auth store methods 

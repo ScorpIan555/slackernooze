@@ -14,11 +14,11 @@ import {
 
 const Header = props => {
   // initialize app's shared authentication state in this component
-  let user = useAuth();
+  let auth = useAuth();
   // from tutorial
   // const authToken = localStorage.getItem(AUTH_TOKEN);
   const authToken = AUTH_TOKEN;
-  console.log('authToken::', user);
+  console.log('authToken::', auth);
   console.log('authToken::', authToken);
   const [method, setMethod] = useState('signOut');
   // initialize hook to call aws api
@@ -27,7 +27,7 @@ const Header = props => {
   const handleClick = async () => {
     try {
       await makeRequest(method);
-      user.toggleIsLoggedInBoolean();
+      auth.toggleIsLoggedInBoolean();
     } catch (error) {
       console.log('error:::', error.message);
       console.error(error);
@@ -47,7 +47,7 @@ const Header = props => {
         </div>
 
         {/* conditionally render authentication buttons in the top nav */}
-        {user.isLoggedIn ? (
+        {auth.isLoggedIn ? (
           <div>
             <a onClick={handleClick}>Logout</a>
           </div>
