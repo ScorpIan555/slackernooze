@@ -17,8 +17,8 @@ const useAuthRequest = (method, params) => {
 
   const makeRequest = async () => {
     console.log('somebody hit make request!', params);
-    const reqString = `${method}(${params.email}, ${params.password})`;
-    console.log('reqString::::', reqString);
+    // const reqString = `${method}(${params.username}, ${params.password})`;
+    // console.log('reqString::::', reqString);
     console.log('auth in index:::', auth);
 
     dispatch(fetching());

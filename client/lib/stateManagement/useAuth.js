@@ -38,6 +38,7 @@ function useProvideAuth() {
   const handleAuthRequestApiCall = async (method, params) => {
     try {
       let response;
+      let responseUser;
 
       // the 'confirmUserSignUp' flow does not require a state update
       if (method === 'confirmSignUp') {
@@ -48,10 +49,15 @@ function useProvideAuth() {
         return response;
       }
       response = await Auth[method](params);
-      response['status'] = 'ok';
-      let responseUser = response.user;
+      {
+        response != null || undefined ? (response['status'] = 'ok') : null;
+      }
+      {
+        response != null || undefined ? (responseUser = response.user) : null;
+      }
+
       handleAuthStateUpdate(responseUser);
-      console.log('response.status::::', response.status);
+
       console.log('response:::', response);
       console.log('auth after response/state update:::', responseUser);
       return responseUser;
@@ -112,17 +118,17 @@ function useProvideAuth() {
 // Aws Amplify Auth built in methods
 // https://aws-amplify.github.io/docs/js/authentication
 
-// Auth.changePassword
-// Auth.completeNewPassword
-// Auth.confirmSignIn
-// Auth.confirmSignUp
-// Auth.forgotPasswordSubmit
-// Auth.resendSignUp
-// Auth.sendCustomChallengeAnswer
-// Auth.signIn
-// Auth.signUp
-// Auth.updateUserAttributes
-// Auth.verifyUserAttribute
+// // Auth.changePassword
+// // Auth.completeNewPassword
+// // Auth.confirmSignIn
+// x// Auth.confirmSignUp
+// // Auth.forgotPasswordSubmit
+// // Auth.resendSignUp
+// // Auth.sendCustomChallengeAnswer
+// x// Auth.signIn
+// x// Auth.signUp
+// // Auth.updateUserAttributes
+// // Auth.verifyUserAttribute
 
 // here needs to go the useProvideAuth reducer
 //      https://usehooks.com/useAuth/

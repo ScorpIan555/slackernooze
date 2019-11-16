@@ -107,7 +107,7 @@ const Login = () => {
       </div>
 
       <div>
-        <button onClick={makeRequest}>Login</button>
+        <button onClick={handleSignIn}>Login</button>
       </div>
       {status === FETCHING && (
         <div className="api-request__fetching">Fetching...</div>
