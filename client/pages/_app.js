@@ -20,6 +20,9 @@ class MyApp extends App {
   };
 
   componentDidMount() {
+    console.log('process.env.CUSTOM_ENV:::', process.env.CUSTOM_ENV);
+    process.env.PORT;
+    //
     AuthInstance.currentCredentials()
       .then(result => {
         console.log('fish:::', result);

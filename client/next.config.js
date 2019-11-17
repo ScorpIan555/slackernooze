@@ -2,11 +2,14 @@
 const withSass = require('@zeit/next-sass');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-const { NODE_ENV, CUSTOM_ENV } = require('./lib/secrets');
+const { envConfig } = require('./lib/secrets');
 
 module.exports = withSass();
 
 const configureWebpack = config => {
+  console.log('envConfig:::', envConfig);
+  const { NODE_ENV, CUSTOM_ENV } = envConfig;
+
   config.plugins.push(
     new Dotenv({
       path: path.join(__dirname, `/lib/secrets/${NODE_ENV}-${CUSTOM_ENV}.env`),
@@ -20,6 +23,7 @@ const configureWebpack = config => {
   }
 
   console.log('next.config.config.plugins::::', config.plugins);
+  // console.log('next.config.::::', config);
   return config;
 };
 // 3
