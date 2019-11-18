@@ -32,6 +32,7 @@ const UserSignup = () => {
   // create validateForm state mgt hooks
   const [validateForm, setValidateForm] = useState(false);
   const [method, setMethod] = useState('');
+  // setMethod('signUp');
   const [email, setEmail] = useState('');
   // create state objects for form fields
   // note: kept separate from form validation as they're using different functions
@@ -73,13 +74,11 @@ const UserSignup = () => {
   };
 
   useEffect(() => {
+    setMethod('signUp');
+    console.log('method::::', method);
     setEmail(username);
-    auth['usernameFromSignUp'] = username;
-  });
-
-  useEffect(() => {
-    console.log('effect-auth:::', auth);
-    console.log('effect-auth:::', auth['user']);
+    // const prefix = method.charAt(0).toUpperCase() + method.slice(1);
+    // console.log('prefix check:::', prefix);
   });
 
   // validate password form in create field
@@ -146,6 +145,7 @@ const UserSignup = () => {
             mutation={SIGNUP_MUTATION}
             variables={{ name, email, password }}
             handleAwsCall={handleSignUp}
+            onCompleted={data => confirm()}
           />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>

@@ -11,6 +11,10 @@ import { HttpLink, createHttpLink } from 'apollo-link-http';
 import { createAuthLink } from 'aws-appsync-auth-link';
 import { ApolloLink } from 'apollo-link';
 
+// https://www.howtographql.com/react-apollo/5-authentication/
+import { setContext } from 'apollo-link-context';
+import { AUTH_TOKEN } from './secrets';
+
 import fetch from 'isomorphic-unfetch';
 
 let apolloClient = null;
@@ -56,8 +60,8 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 
   if (ssr || PageComponent.getInitialProps) {
     WithApollo.getInitialProps = async ctx => {
-      console.log('ctx.err object:::', ctx.err);
-      console.log('ctx object:::', ctx);
+      // console.log('ctx.err object:::', ctx.err);
+      // console.log('ctx object:::', ctx);
       const { AppTree } = ctx;
 
       // Initialize ApolloClient, add it to the ctx object so
@@ -68,7 +72,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
       let pageProps = {};
       if (PageComponent.getInitialProps) {
         pageProps = await PageComponent.getInitialProps(ctx);
-        console.log('pageProps after get initial props call:::', pageProps);
+        // console.log('pageProps after get initial props call:::', pageProps);
       }
 
       // Only on the server:
@@ -144,43 +148,43 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
-  const getCredentialsAsync = async () => {
-    try {
-      let res = await AwsAmplifyAuth.currentCredentials();
-      console.log('getCredentials.res:::', res);
-      return res;
-    } catch (error) {
-      console.log('getCredentials.catch(error):::', error);
-      console.error('getCredentials.catch(error):::', error);
-    }
-  };
+  // const getCredentialsAsync = async () => {
+  //   try {
+  //     let res = await AwsAmplifyAuth.currentCredentials();
+  //     console.log('getCredentials.res:::', res);
+  //     return res;
+  //   } catch (error) {
+  //     console.log('getCredentials.catch(error):::', error);
+  //     console.error('getCredentials.catch(error):::', error);
+  //   }
+  // };
 
-  const getCredentials = () => {
-    AwsAmplifyAuth.currentCredentials()
-      .then(result => {
-        console.log('getCredentials.result:::', result);
-        return result;
-      })
-      .catch(error => {
-        console.log('getCredentialsError:::', error);
-        console.error(error);
-      });
-  };
+  // const getCredentials = () => {
+  //   AwsAmplifyAuth.currentCredentials()
+  //     .then(result => {
+  //       console.log('getCredentials.result:::', result);
+  //       return result;
+  //     })
+  //     .catch(error => {
+  //       console.log('getCredentialsError:::', error);
+  //       console.error(error);
+  //     });
+  // };
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
   // https://github.com/awslabs/aws-mobile-appsync-sdk-js#creating-a-client
 
-  console.log(
-    'AwsAppSyncConfig.graphqlEndpoint',
-    AwsAppSyncConfig.graphqlEndpoint
-  );
-  console.log('AwsAppSyncConfig.region', AwsAppSyncConfig.region);
-  console.log(
-    'AwsAppSyncConfig.authenticationTpe',
-    AwsAppSyncConfig.authenticationType
-  );
-  console.log('AwsAppSyncConfig.apiKey', AwsAppSyncConfig.apiKey);
+  // console.log(
+  //   'AwsAppSyncConfig.graphqlEndpoint',
+  //   AwsAppSyncConfig.graphqlEndpoint
+  // );
+  // console.log('AwsAppSyncConfig.region', AwsAppSyncConfig.region);
+  // console.log(
+  //   'AwsAppSyncConfig.authenticationTpe',
+  //   AwsAppSyncConfig.authenticationType
+  // );
+  // console.log('AwsAppSyncConfig.apiKey', AwsAppSyncConfig.apiKey);
 
   // console.log('AwsAppSyncConfig.token', iamCredentials);
 
@@ -204,47 +208,102 @@ function createApolloClient(initialState = {}) {
   //   }
   // );
 
-  let url = AwsAppSyncConfig.graphqlEndpoint;
+  // let url = AwsAppSyncConfig.graphqlEndpoint;
 
-  let auth = {
-    // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
-    type: 'API_KEY',
-    // apiKey: AwsAppSyncConfig.apiKey,
-    // type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
-    // credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
-    // type: 'AWS_IAM',
-    credentials: () => AwsAmplifyAuth.currentCredentials()
-  };
-  let region = {
-    region: AwsAppSyncConfig.region
-  };
+  // let auth = {
+  //   // https://aws.amazon.com/blogs/mobile/using-multiple-authorization-types-with-aws-appsync-graphql-apis/
+  //   type: 'API_KEY',
+  //   // apiKey: AwsAppSyncConfig.apiKey,
+  //   // type: AwsAppSyncConfig.authenticationType, // per auth-link github in the appsync-sdk
+  //   // credentials: getCredentials() // when authType = 'AWS_IAM' it wants a function call to AwsAmplifyAuth.currentCredentials();
+  //   // type: 'AWS_IAM',
+  //   credentials: () => AwsAmplifyAuth.currentCredentials()
+  // };
+  // let region = {
+  //   region: AwsAppSyncConfig.region
+  // };
 
-  // let link = ApolloLink.from([createAuthLink({ url, region, auth })]);
-  let link = ApolloLink.from([
-    // https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/packages/aws-appsync-auth-link/src/auth-link.ts
-    //  had to look at the code b/c the examples show'd the arrangement in the auth object
-    //   for authenticationTpe: 'API_KEY', but I wanna use 'AWS_IAM' so per the code... see above
-    createAuthLink({ url, region, auth }),
-    createHttpLink({ uri: url }) // incl per https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/473
-  ]);
-  console.log('line222:auth:::', auth);
+  // // let link = ApolloLink.from([createAuthLink({ url, region, auth })]);
+  // let link = ApolloLink.from([
+  //   // https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/packages/aws-appsync-auth-link/src/auth-link.ts
+  //   //  had to look at the code b/c the examples show'd the arrangement in the auth object
+  //   //   for authenticationTpe: 'API_KEY', but I wanna use 'AWS_IAM' so per the code... see above
+  //   createAuthLink({ url, region, auth }),
+  //   createHttpLink({ uri: url }) // incl per https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/473
+  // ]);
+  // console.log('line222:auth:::', auth);
 
-  return new ApolloClient({
-    ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
-    link,
-    // cache: new InMemoryCache().restore(initialState)
-    cache: new InMemoryCache()
-  });
-
-  // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
   // return new ApolloClient({
   //   ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
-  //   link: new HttpLink({
-  //     // TODO need to change this to an env variable
-  //     uri: 'http://localhost:4000', // Server URL (must be absolute)
-  //     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-  //     fetch
-  //   }),
-  //   cache: new InMemoryCache().restore(initialState)
+  //   link,
+  //   // cache: new InMemoryCache().restore(initialState)
+  //   cache: new InMemoryCache()
   // });
+  let token;
+
+  // AwsAmplifyAuth.currentSession()
+  //   .then(result => {
+  //     console.log('fish.result:::', result);
+  //     let accessToken = result.accessToken;
+  //     token = accessToken.jwtToken;
+  //     console.log('fish.result.token:::', token);
+  //     return token;
+  //   })
+  //   .catch(error => {
+  //     console.log('Aws.error:::', error);
+  //   });
+
+  const authLink = setContext((_, { headers }) => {
+    // let token = AwsAmplifyAuth.currentSession().then
+    const token = localStorage.getItem(AUTH_TOKEN);
+
+    console.log('auth.sessionToken:::', token);
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    };
+  });
+
+  console.log('authLink::', authLink);
+  console.log('token:::', token);
+  // console.log('window.localStorage:::', window.localStorage);
+  // typeof window != undefined
+  //   ? console.log('window.localStorage:::', window.localStorage)
+  //   : null;
+  // if (window != undefined || null) {
+  //   console.log(
+  //     'window.localStorage.auth-link:::',
+  //     window.localStorage['auth-link']
+  //   );
+  // }
+
+  // console.log('localStorage:::', localStorage.AUTH_TOKEN);
+
+  const httpLink = {
+    // log: () => console.log('window:', window),
+    uri: process.env.HOST, // Server URL (must be absolute)
+    credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+    fetch
+  };
+
+  //   let link = ApolloLink.from([
+  // new AuthLink,Ap
+  // new HttpLink(httpLink)
+  //   ])
+
+  // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
+  return new ApolloClient({
+    // great write-up of GQL visual
+    // https://blog.apollographql.com/the-concepts-of-graphql-bc68bd819be3
+    ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
+    // link: authLink.concat(httpLink),
+    // link: new HttpLink(httpLink),
+    link: ApolloLink.from([
+      authLink,
+      new HttpLink(httpLink)
+    ]),
+    cache: new InMemoryCache().restore(initialState)
+  });
 }

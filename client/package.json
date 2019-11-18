@@ -14,6 +14,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@zeit/next-sass": "^1.0.1",
     "apollo-boost": "^0.4.4",
+    "apollo-link-context": "^1.0.19",
     "aws-appsync": "^2.0.2",
     "aws-appsync-auth-link": "^1.0.1",
     "aws-appsync-react": "^2.0.2",

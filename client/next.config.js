@@ -7,7 +7,7 @@ const { envConfig } = require('./lib/secrets');
 module.exports = withSass();
 
 const configureWebpack = config => {
-  console.log('envConfig:::', envConfig);
+  // console.log('envConfig:::', envConfig);
   const { NODE_ENV, CUSTOM_ENV } = envConfig;
 
   config.plugins.push(
@@ -22,7 +22,7 @@ const configureWebpack = config => {
     config.devtool = 'cheap-module-source-map';
   }
 
-  console.log('next.config.config.plugins::::', config.plugins);
+  // console.log('next.config.config.plugins::::', config.plugins);
   // console.log('next.config.::::', config);
   return config;
 };

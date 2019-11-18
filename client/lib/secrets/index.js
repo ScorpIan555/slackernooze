@@ -13,6 +13,9 @@ let envConfig = {
 
 console.log('config.config::::', envConfig);
 
+const AUTH_TOKEN = 'auth-token';
+
 module.exports = {
-  envConfig
+  envConfig,
+  AUTH_TOKEN
 };

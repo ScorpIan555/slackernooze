@@ -25,7 +25,7 @@ class MyApp extends App {
     //
     AuthInstance.currentCredentials()
       .then(result => {
-        console.log('fish:::', result);
+        // console.log('fish:::', result);
         let cachedResult = result;
         this.setState({
           cachedCurrentCreds: cachedResult
@@ -40,7 +40,7 @@ class MyApp extends App {
 
     AuthInstance.currentSession()
       .then(result => {
-        console.log('currentSession.result:::', result);
+        // console.log('currentSession.result:::', result);
         let cachedResult = result;
         this.setState({
           cachedCurrentSession: cachedResult
@@ -54,12 +54,6 @@ class MyApp extends App {
     // console.log('req.headers.host:::', req.headers.host);
   }
 
-  logShit = () => {
-    console.log('window.location:::', window);
-    console.log('window.location:::', window.location);
-    console.log('window.document.localStorage;::', window.localStorage);
-    console.log('this.state:::', this.state);
-  };
 
   componentDidCatch(error, errorInfo) {
     console.log('Custom error handling!:::', error);
@@ -68,6 +62,7 @@ class MyApp extends App {
   }
 
   componentDidUpdate(prevProps) {
+    // console.log('window:::', window);
     // console.log('prevProps::::', prevProps);
     // console.log('this.props:::', this.props);
   }

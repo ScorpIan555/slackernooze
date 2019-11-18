@@ -11,6 +11,8 @@ import {
 } from '../lib/stateManagement';
 import { GraphQLMutation, LOGIN_MUTATION } from '../lib/graphql';
 
+import { SharedAuth } from '../lib/authUtils';
+
 // set initialState within the component
 const initialState = {
   // synchronous action/reducer fields
@@ -26,6 +28,13 @@ const initialState = {
 };
 
 const Login = () => {
+  // const sharedAuth = SharedAuth('signIn');
+
+  // const { handleSignIn, handleOnChange } = sharedAuth;
+  // // const handleSignIn = sharedAuth.handleSignIn;
+
+  // const { username, password, email, status, response } = sharedAuth;
+
   // initialize auth object in order to use user mgt
   let auth = useAuth();
   // initialize router object
@@ -59,37 +68,31 @@ const Login = () => {
       // toggle client state to indicate that a user is now signed in
       // navigate back to home page after everything's kosher
       auth.toggleIsLoggedInBoolean();
-      router.push('/');
     } catch (error) {
       console.log('error:::', error.message);
       console.error(error);
     }
   };
 
-  const _confirm = async () => {
-    console.log('_confirm:::', confirm);
+  useEffect(() => {
+    setEmail(username);
+    // console.log('username:', username);
+    // console.log('email:::', email);
+    // console.log('password', password);
+  });
 
-    // per the tutorial, this is a callback that gets the token after the mutation
-    // this would be like what i need to do with the getSession() call
-    // from the getSession() call, I the would need to set the token
-    
-    //
-    //
-
-    // const { token } = this.state.login ? data.login : data.signup;
-    // this._saveUserData(token);
-    // this.props.history.push(`/`);
+  const _confirm = async data => {
+    const token = data.login;
+    console.log('token:::', token);
+    console.log('data object:::', data);
+    _saveUserData(token);
+    router.push('/');
   };
 
   const _saveUserData = token => {
+    console.log('_saveUserData.token:::', token);
     localStorage.setItem(AUTH_TOKEN, token);
-    console.log('token:::', token);
   };
-
-  useEffect(() => {
-    setEmail(username);
-    console.log('email::', username);
-  });
 
   return (
     <div>

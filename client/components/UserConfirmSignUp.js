@@ -40,8 +40,6 @@ const UserConfirmSignup = () => {
         : setUsername('vandaleyindustriesllc@gmail.com');
     }
 
-    // need to set method t/b passed to 3rd pary Auth api call
-    setMethod('confirmSignUp');
     // synchronous dispatch
     dispatch({ field: event.target.name, value: event.target.value });
     console.log('handleOnChange.code:::', code);
@@ -50,7 +48,7 @@ const UserConfirmSignup = () => {
   };
 
   // confirm code
-  const handleConfirmCode = async event => {
+  const handleConfirmSignUp = async event => {
     try {
       console.log('params:::', params);
       // call the auth api, update client state
@@ -64,6 +62,11 @@ const UserConfirmSignup = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    // need to set method t/b passed to 3rd pary Auth api call
+    setMethod('confirmSignUp');
+  });
 
   return (
     <div>
@@ -87,7 +90,7 @@ const UserConfirmSignup = () => {
       </div>
       <div>
         <br />
-        <button onClick={handleConfirmCode}> Submit Code</button>
+        <button onClick={handleConfirmSignUp}> Submit Code</button>
       </div>
 
       {/* <div>

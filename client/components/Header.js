@@ -19,8 +19,8 @@ const Header = props => {
   // from tutorial
   // const authToken = localStorage.getItem(AUTH_TOKEN);
   let authToken = auth.sessionToken;
-  console.log('authToken::', auth);
-  console.log('authToken::', authToken);
+  // console.log('authToken::', auth);
+  // console.log('authToken::', authToken);
   const [method, setMethod] = useState('signOut');
   // initialize hook to call aws api
   const [{ status, response }, makeRequest] = useAuthRequest(method);

@@ -30,10 +30,12 @@ const LinkList = props => {
   return (
     <Query query={FEED_QUERY} options={queryOptions}>
       {({ loading, error, data, NetworkStatus }) => {
-        console.log('loading:::', loading);
+        {
+          /* console.log('loading:::', loading);
         console.log('error:::', error);
         console.log('data:::', data);
-        console.log('networkStatus::', NetworkStatus);
+        console.log('networkStatus::', NetworkStatus); */
+        }
         if (loading) return <div>Fetching</div>;
         if (error) return <div>Error</div>;
 

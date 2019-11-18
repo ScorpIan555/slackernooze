@@ -10,7 +10,11 @@ const GraphQLMutation = ({
   console.log('mutation:::', mutation);
 
   return (
-    <Mutation mutation={mutation} variables={variables}>
+    <Mutation
+      mutation={mutation}
+      variables={variables}
+      onCompleted={onCompleted}
+    >
       {handleMutation => (
         <button
           className="pointer mr2 button"

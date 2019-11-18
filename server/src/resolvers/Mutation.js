@@ -56,6 +56,8 @@ const login = async (parent, args, context, info) => {
   console.log('Mutation.login.parent:::', parent);
   console.log('Mutation.login.args:::', args);
   console.log('Mutation.login.context:::', context);
+  console.log('Mutation.login.context.prisma._token:::', context.prisma._token);
+  // console.log('Mutation.login.res:::', context.res.token);
   console.log('Mutation.login.info:::', info);
   // 1
   const user = await context.prisma.user({ email: args.email });

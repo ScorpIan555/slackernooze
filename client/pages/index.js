@@ -3,7 +3,7 @@ import LinkList from '../components/LinkList';
 import { withApollo } from '../lib/apollo';
 
 const IndexPage = props => {
-  console.log('IndexPage.props:::', props);
+  // console.log('IndexPage.props:::', props);
 
   return <LinkList />;
 };
