@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-
 const NewsLink = props => {
   return (
     <div>

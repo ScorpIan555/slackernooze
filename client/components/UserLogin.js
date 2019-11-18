@@ -58,6 +58,8 @@ const Login = props => {
     setMethod('signIn');
     console.log('onChange:::', event.target.value);
     dispatch({ field: event.target.name, value: event.target.value });
+    setEmail(username);
+    // console.log('username:', username);
   };
 
   // signup user
@@ -76,12 +78,10 @@ const Login = props => {
 
   const handleNav = () => {
     console.log('Login.props after everything:::', props);
-    // router.push('/');
+    router.push('/');
   };
 
   useEffect(() => {
-    setEmail(username);
-    console.log('username:', username);
     // console.log('email:::', email);
     // console.log('password', password);
   });
@@ -90,7 +90,7 @@ const Login = props => {
     const token = data.login;
     console.log('token:::', token);
     console.log('data object:::', data);
-    _saveUserData(token);
+    await _saveUserData(token);
   };
 
   const _saveUserData = token => {

@@ -11,6 +11,16 @@ const FEED_QUERY = gql`
         id
         url
         description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
       }
     }
   }
@@ -42,8 +52,8 @@ const LinkList = props => {
         const linksToRender = data.feed.links;
         return (
           <div>
-            {linksToRender.map(link => (
-              <NewsLink key={link.id} link={link} />
+            {linksToRender.map((link, index) => (
+              <NewsLink key={link.id} link={link} index={index} />
             ))}
           </div>
         );

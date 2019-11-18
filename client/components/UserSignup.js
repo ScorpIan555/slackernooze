@@ -50,6 +50,8 @@ const UserSignup = props => {
     setMethod('signUp');
     // synchronous dispatch
     dispatch({ field: event.target.name, value: event.target.value });
+    setEmail(username);
+    // console.log('username:', username);
   };
 
   // signup user
@@ -76,8 +78,6 @@ const UserSignup = props => {
   useEffect(() => {
     // setMethod('signUp');
     // console.log('method::::', method);
-    setEmail(username);
-    console.log('username:', username);
     // const prefix = method.charAt(0).toUpperCase() + method.slice(1);
     // console.log('prefix check:::', prefix);
   });
