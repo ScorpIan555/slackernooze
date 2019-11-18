@@ -256,8 +256,9 @@ function createApolloClient(initialState = {}) {
   const authLink = setContext((_, { headers }) => {
     // let token = AwsAmplifyAuth.currentSession().then
     const token = localStorage.getItem(AUTH_TOKEN);
+    console.log('headers:::', headers);
 
-    console.log('auth.sessionToken:::', token);
+    console.log('auth.sessionToken:::', JSON.stringify(token));
     return {
       headers: {
         ...headers,
@@ -300,10 +301,7 @@ function createApolloClient(initialState = {}) {
     ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
     // link: authLink.concat(httpLink),
     // link: new HttpLink(httpLink),
-    link: ApolloLink.from([
-      authLink,
-      new HttpLink(httpLink)
-    ]),
+    link: ApolloLink.from([authLink, new HttpLink(httpLink)]),
     cache: new InMemoryCache().restore(initialState)
   });
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NewsLink from './NewsLink';
+import Link from './Link';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { NetworkStatus } from 'apollo-client';
@@ -53,7 +53,7 @@ const LinkList = props => {
         return (
           <div>
             {linksToRender.map((link, index) => (
-              <NewsLink key={link.id} link={link} index={index} />
+              <Link key={link.id} link={link} index={index} />
             ))}
           </div>
         );

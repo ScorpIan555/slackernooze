@@ -20,8 +20,6 @@ class MyApp extends App {
   };
 
   componentDidMount() {
-    console.log('process.env.CUSTOM_ENV:::', process.env.CUSTOM_ENV);
-    process.env.PORT;
     // //
     // AuthInstance.currentCredentials()
     //   .then(result => {
@@ -31,13 +29,11 @@ class MyApp extends App {
     //       cachedCurrentCreds: cachedResult
     //     });
     //     return cachedResult;
-
     //     //  cachedResult
     //   })
     //   .catch(error => {
     //     console.log('error:::', error);
     //   });
-
     // AuthInstance.currentSession()
     //   .then(result => {
     //     // console.log('currentSession.result:::', result);
@@ -50,7 +46,6 @@ class MyApp extends App {
     //   .catch(error => {
     //     console.log('error:::', error);
     //   });
-
     // console.log('req.headers.host:::', req.headers.host);
   }
 

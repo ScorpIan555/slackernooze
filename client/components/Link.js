@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { AUTH_TOKEN } from '../lib/secrets';
 import { timeDifferenceForDate } from '../lib/guiUtils';
+import { VOTE_MUTATION } from '../lib/graphql';
+import { Mutation } from 'react-apollo';
+import { useAuth } from '../lib/stateManagement';
 
 const Link = props => {
   let auth = useAuth();
@@ -11,9 +14,16 @@ const Link = props => {
       <div className="flex items-center">
         <span className="gray">{props.index + 1}.</span>
         {authToken && (
-          <div className="ml1 gray f11" onClick={() => _voteForLink()}>
-            ▲
-          </div>
+          <Mutation
+            mutation={VOTE_MUTATION}
+            variables={{ linkId: props.link.id }}
+          >
+            {voteMutation => (
+              <div className="ml1 gray f11" onClick={voteMutation}>
+                ▲
+              </div>
+            )}
+          </Mutation>
         )}
       </div>
       <div className="ml1">

@@ -87,16 +87,16 @@ const Login = props => {
   });
 
   const _confirm = async data => {
-    const token = data.login;
+    const { token } = data.login;
     console.log('token:::', token);
     console.log('data object:::', data);
     await _saveUserData(token);
+    handleNav();
   };
 
   const _saveUserData = token => {
     console.log('_saveUserData.token:::', token);
     localStorage.setItem(AUTH_TOKEN, token);
-    handleNav();
   };
 
   return (

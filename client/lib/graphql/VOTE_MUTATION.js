@@ -1,3 +1,5 @@
+import gql from 'graphql-tag';
+
 const VOTE_MUTATION = gql`
   mutation VoteMutation($linkId: ID!) {
     vote(linkId: $linkId) {
@@ -16,3 +18,5 @@ const VOTE_MUTATION = gql`
     }
   }
 `;
+
+export default VOTE_MUTATION;
