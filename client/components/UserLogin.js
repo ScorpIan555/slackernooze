@@ -11,7 +11,7 @@ import {
 } from '../lib/stateManagement';
 import { GraphQLMutation, LOGIN_MUTATION } from '../lib/graphql';
 
-import { SharedAuth } from '../lib/authUtils';
+// import { SharedAuth } from '../lib/authUtils';
 
 // set initialState within the component
 const initialState = {
@@ -27,7 +27,7 @@ const initialState = {
   response: null
 };
 
-const Login = () => {
+const Login = props => {
   // const sharedAuth = SharedAuth('signIn');
 
   // const { handleSignIn, handleOnChange } = sharedAuth;
@@ -67,16 +67,21 @@ const Login = () => {
       await makeRequest(method, params);
       // toggle client state to indicate that a user is now signed in
       // navigate back to home page after everything's kosher
-      auth.toggleIsLoggedInBoolean();
+      // auth.toggleIsLoggedInBoolean();
     } catch (error) {
       console.log('error:::', error.message);
       console.error(error);
     }
   };
 
+  const handleNav = () => {
+    console.log('Login.props after everything:::', props);
+    // router.push('/');
+  };
+
   useEffect(() => {
     setEmail(username);
-    // console.log('username:', username);
+    console.log('username:', username);
     // console.log('email:::', email);
     // console.log('password', password);
   });
@@ -86,12 +91,12 @@ const Login = () => {
     console.log('token:::', token);
     console.log('data object:::', data);
     _saveUserData(token);
-    router.push('/');
   };
 
   const _saveUserData = token => {
     console.log('_saveUserData.token:::', token);
     localStorage.setItem(AUTH_TOKEN, token);
+    handleNav();
   };
 
   return (

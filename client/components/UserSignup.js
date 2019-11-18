@@ -24,7 +24,7 @@ const initialState = {
   response: null
 };
 
-const UserSignup = () => {
+const UserSignup = props => {
   // initialize auth object in order to use user mgt
   let auth = useAuth();
   // initialize router object
@@ -74,9 +74,10 @@ const UserSignup = () => {
   };
 
   useEffect(() => {
-    setMethod('signUp');
-    console.log('method::::', method);
+    // setMethod('signUp');
+    // console.log('method::::', method);
     setEmail(username);
+    console.log('username:', username);
     // const prefix = method.charAt(0).toUpperCase() + method.slice(1);
     // console.log('prefix check:::', prefix);
   });

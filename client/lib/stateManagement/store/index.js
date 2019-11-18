@@ -15,7 +15,7 @@ const useAuthRequest = (method, params) => {
   const [state, dispatch] = useReducer(asynchronousReducer, initialState);
   const auth = useAuth();
 
-  const makeRequest = async () => {
+  const makeRequest = async (method, params) => {
     console.log('somebody hit make request!', params);
     // const reqString = `${method}(${params.username}, ${params.password})`;
     // console.log('reqString::::', reqString);
@@ -23,8 +23,8 @@ const useAuthRequest = (method, params) => {
 
     dispatch(fetching());
     try {
-      console.log('somebody hit make request!', method);
-      console.log('somebody hit make request!', params);
+      // console.log('somebody hit make request!', method);
+      // console.log('somebody hit make request!', params);
       let response = await auth[method](method, params);
       // capture user object returned from request, enter into app state
       dispatch(success(response));

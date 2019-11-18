@@ -50,7 +50,7 @@ const Header = props => {
         ) : null}
 
         {/* conditionally render authentication buttons in the top nav */}
-        {auth.isLoggedIn ? (
+        {auth.sessionToken ? (
           <div>
             <a onClick={handleClick}>Logout</a>
           </div>

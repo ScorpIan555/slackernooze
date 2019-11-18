@@ -22,38 +22,37 @@ class MyApp extends App {
   componentDidMount() {
     console.log('process.env.CUSTOM_ENV:::', process.env.CUSTOM_ENV);
     process.env.PORT;
-    //
-    AuthInstance.currentCredentials()
-      .then(result => {
-        // console.log('fish:::', result);
-        let cachedResult = result;
-        this.setState({
-          cachedCurrentCreds: cachedResult
-        });
-        return cachedResult;
+    // //
+    // AuthInstance.currentCredentials()
+    //   .then(result => {
+    //     // console.log('fish:::', result);
+    //     let cachedResult = result;
+    //     this.setState({
+    //       cachedCurrentCreds: cachedResult
+    //     });
+    //     return cachedResult;
 
-        //  cachedResult
-      })
-      .catch(error => {
-        console.log('error:::', error);
-      });
+    //     //  cachedResult
+    //   })
+    //   .catch(error => {
+    //     console.log('error:::', error);
+    //   });
 
-    AuthInstance.currentSession()
-      .then(result => {
-        // console.log('currentSession.result:::', result);
-        let cachedResult = result;
-        this.setState({
-          cachedCurrentSession: cachedResult
-        });
-        return cachedResult;
-      })
-      .catch(error => {
-        console.log('error:::', error);
-      });
+    // AuthInstance.currentSession()
+    //   .then(result => {
+    //     // console.log('currentSession.result:::', result);
+    //     let cachedResult = result;
+    //     this.setState({
+    //       cachedCurrentSession: cachedResult
+    //     });
+    //     return cachedResult;
+    //   })
+    //   .catch(error => {
+    //     console.log('error:::', error);
+    //   });
 
     // console.log('req.headers.host:::', req.headers.host);
   }
-
 
   componentDidCatch(error, errorInfo) {
     console.log('Custom error handling!:::', error);
