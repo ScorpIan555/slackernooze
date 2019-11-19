@@ -10,6 +10,7 @@ import {
   ERROR
 } from '../lib/stateManagement';
 import { GraphQLMutation, LOGIN_MUTATION } from '../lib/graphql';
+import { AUTH_TYPE } from 'aws-appsync-auth-link';
 
 // import { SharedAuth } from '../lib/authUtils';
 
@@ -78,7 +79,7 @@ const Login = props => {
 
   const handleNav = () => {
     console.log('Login.props after everything:::', props);
-    router.push('/');
+    // router.push('/');
   };
 
   useEffect(() => {
@@ -87,7 +88,8 @@ const Login = props => {
   });
 
   const _confirm = async data => {
-    const { token } = data.login;
+    let token = data != undefined ? data.login.token : null;
+    // const { token } = data.login;
     console.log('token:::', token);
     console.log('data object:::', data);
     await _saveUserData(token);

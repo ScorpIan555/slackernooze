@@ -2,6 +2,7 @@
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { AUTH_TOKEN } from '../lib/secrets';
 import './Header.scss';
 import {
   useAuth,
@@ -17,14 +18,16 @@ const Header = props => {
   let auth = useAuth();
   let router = useRouter();
   // from tutorial
-  // const authToken = localStorage.getItem(AUTH_TOKEN);
+  // const authToken = window.localStorage.getItem(AUTH_TOKEN);
   let authToken = auth.sessionToken;
   // console.log('authToken::', auth);
   // console.log('authToken::', authToken);
   const [method, setMethod] = useState('signOut');
   // initialize hook to call aws api
   const [{ status, response }, makeRequest] = useAuthRequest(method);
+  console.log('Header.props:::', props);
 
+  console.log('router:::', router);
   const handleClick = async () => {
     try {
       await makeRequest(method);
@@ -41,7 +44,7 @@ const Header = props => {
         <div>
           <Link href="/">{props.appTitle + ' '}</Link>
         </div>
-        {auth.sessionToken ? (
+        {authToken ? (
           <div className="">
             <Link href="/submit">
               <a> | Submit</a>
@@ -50,9 +53,11 @@ const Header = props => {
         ) : null}
 
         {/* conditionally render authentication buttons in the top nav */}
-        {auth.sessionToken ? (
+        {authToken ? (
           <div>
-            <a onClick={handleClick}>Logout</a>
+            <Link href="/">
+              <a> | Logout</a>
+            </Link>
           </div>
         ) : (
           <div>

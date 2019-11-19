@@ -38,6 +38,8 @@ function useProvideAuth() {
 
   // handle the request to Aws/Cognito resource
   const handleAuthRequestApiCall = async (method, params) => {
+    console.log('handleAuthRequestApiCall.method', method);
+    console.log('handleAuthRequestApiCall.params', params);
     try {
       // 1)
       // initialize block variables
@@ -58,6 +60,7 @@ function useProvideAuth() {
 
       // 'signUp', 'signIn', 'signOut' should use the below block
       response = await Auth[method](params);
+      console.log('response:::', response);
 
       // 3)
       // update client state
@@ -71,7 +74,18 @@ function useProvideAuth() {
 
         response['status'] = 'ok';
         responseUser = response.attributes;
-        responseSessionToken = response.signInUserSession.accessToken.jwtToken;
+        {
+          method === 'signIn'
+            ? (responseSessionToken =
+                response.signInUserSession.accessToken.jwtToken)
+            : null;
+        }
+        // {
+        //   method === 'signUp'
+        //     ? (responseSessionToken =
+        //         response.signUpUserSession.accessToken.jwtToken)
+        //     : null;
+        // }
       }
       // with response successfully received, update application state with user & session info
       handleAuthStateUpdate(responseUser, responseSessionToken);

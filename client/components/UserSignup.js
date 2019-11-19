@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { useRouter } from 'next/router';
 import { SIGNUP_MUTATION, GraphQLMutation } from '../lib/graphql';
+import { AUTH_TOKEN } from '../lib/secrets';
 import {
   useAuth,
   useAuthRequest,
@@ -89,6 +90,36 @@ const UserSignup = props => {
       : setValidateForm(false);
   });
 
+  const handleNav = () => {
+    console.log('Login.props after everything:::', props);
+    router.push('/');
+  };
+
+  useEffect(() => {
+    // console.log('email:::', email);
+    // console.log('password', password);
+  });
+
+  const _confirm = async data => {
+    console.log('data object:::', data);
+    let token =
+      data != undefined
+        ? data.signup != undefined
+          ? data.signup.token
+          : null
+        : null;
+    await // const { token } = data.login;
+    console.log('token:::', token);
+
+    await _saveUserData(token);
+    handleNav();
+  };
+
+  const _saveUserData = token => {
+    console.log('_saveUserData.token:::', token);
+    localStorage.setItem(AUTH_TOKEN, token);
+  };
+
   return (
     <div>
       <div className="flex flex-column mt3">
@@ -146,7 +177,7 @@ const UserSignup = props => {
             mutation={SIGNUP_MUTATION}
             variables={{ name, email, password }}
             handleAwsCall={handleSignUp}
-            onCompleted={data => confirm()}
+            onCompleted={data => _confirm(data)}
           />
         ) : (
           <button onClick={handleInvalidPassword}>You Shall Not Pass</button>
