@@ -37,6 +37,9 @@ const queryOptions = {
 };
 
 const LinkList = props => {
+
+  
+
   return (
     <Query query={FEED_QUERY} options={queryOptions}>
       {({ loading, error, data, NetworkStatus }) => {

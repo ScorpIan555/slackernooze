@@ -23,6 +23,9 @@ const Link = props => {
             mutation={VOTE_MUTATION}
             variables={{ linkId: props.link.id }}
             onClick={handleClick(props)}
+            update={(store, { data: { vote } }) =>
+              props.updateStoreAfterVote(store, vote, props.link.id)
+            }
           >
             {voteMutation => (
               <div className="ml1 gray f11" onClick={voteMutation}>
