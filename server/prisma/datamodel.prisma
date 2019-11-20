@@ -4,6 +4,7 @@ type Link {
   url: String!
   postedBy: User
   createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   votes: [Vote!]! @relation(link: INLINE)
 }
 

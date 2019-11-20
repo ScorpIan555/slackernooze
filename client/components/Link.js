@@ -6,12 +6,17 @@ import { Mutation } from 'react-apollo';
 import { useAuth } from '../lib/stateManagement';
 
 const Link = props => {
+  console.log('Link.props:::', props);
   let auth = useAuth();
   let authToken = auth.sessionToken;
 
   const handleClick = props => {
     // event.preventDefault();
     console.log('Vote.handleClick:::', props);
+  };
+
+  const updateStoreAfterVote = () => {
+    console.log('updateStoreAfterVote! ::: ', store, vote, props);
   };
 
   return (

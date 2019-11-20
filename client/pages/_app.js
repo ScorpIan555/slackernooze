@@ -52,7 +52,7 @@ class MyApp extends App {
         this.setState({
           currentCredentials: currentCredentials
         });
-        return currentCredentials;
+        return;
         //  cachedResult
       })
       .catch(error => {
@@ -67,10 +67,14 @@ class MyApp extends App {
           currentSession: currentSession,
           token:
             currentSession != undefined || null
-              ? currentSession.accessToken.jwtToken
+              ? currentSession.idToken.jwtToken
+              : null,
+          user:
+            currentSession != undefined || null
+              ? currentSession.idToken.payload
               : null
         });
-        return currentSession;
+        return;
       })
       .catch(error => {
         console.log('error:::', error);
@@ -100,7 +104,7 @@ class MyApp extends App {
     console.log('_app.js -- this:::', this);
 
     return (
-      <ProvideAuth token={this.state.token}>
+      <ProvideAuth token={this.state.token} user={this.state.user}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

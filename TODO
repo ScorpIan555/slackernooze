@@ -23,3 +23,21 @@ https://github.com/zeit/next.js/blob/master/examples/with-graphql-hooks/pages/_a
 
 %%%%%%% 11/11
 1) decide which auth flow to use (aws vs localStorage) and knock it out...
+
+db.link.insert({
+	"description" : "Green tea fact sheet",
+	"url" : "https://www.itoen-global.com/allabout_greentea/components_benefit.html",
+	"createdAt" : ISODate("2019-11-19T19:04:57.762Z"),
+    "updatedAt" : ISODate("2019-11-19T19:04:57.762Z"),
+	"votes" : [
+		ObjectId("5dd43d5302743900078d5af3")
+	]
+})
+
+
+db.link.insert({
+	"description" : "Club-by-club Premier League Finances",
+	"url" : "https://www.theguardian.com/football/2019/may/22/premier-league-finances-club-guide-2017-18-accounts-manchester-united-city",
+    "createdAt" : ISODate("2019-11-20T17:08:25.394Z"),
+"updatedAt" : ISODate("2019-11-20T17:08:25.394Z")
+})

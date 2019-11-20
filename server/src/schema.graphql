@@ -5,7 +5,7 @@ type Query {
   # users()
 }
 
-type Feed { 
+type Feed {
   links: [Link!]!
   count: Int!
 }

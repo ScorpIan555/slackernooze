@@ -11,32 +11,6 @@ const signup = async (parent, args, context, info) => {
   // console.log('Mutation.signup.context.prisma:::', context.prisma);
   // console.log('Mutation.signup.info:::', info);
 
-  console.log('AUTH.email', args.email);
-  console.log('AUTH.password', args.password);
-  console.log('AUTH.name', args.name);
-  // const method = 'signUp';
-  // let username = args.email;
-  // let password = args.password;
-  // console.log('email:::', username);
-  // console.log('password:::', password);
-  // console.log('typeof.Auth:::', Auth);
-
-  // const response = Auth.signUp({ username, password })
-  //   .then(res => {
-  //     console.log('res:::', res);
-  //   })
-  //   .catch(err => {
-  //     console.log('error:::', err);
-  //   });
-  // console.log('response:::', response);
-
-  // try {
-  //   const response = await Auth.signUp(email, password);
-  //   console.log('Auth.response:::', response);
-  // } catch (error) {
-  //   console.log(error.message);
-  //   console.error(error);
-  // }
   // 1
   const password = await bcrypt.hash(args.password, 10);
   // 2
@@ -90,7 +64,9 @@ const post = (root, args, context) => {
   return context.prisma.createLink({
     url: args.url,
     description: args.description,
-    postedBy: { connect: { id: userId } }
+    postedBy: { connect: { id: userId } },
+    createdAt: args.createdAt,
+    updatedAt: args.updatedAt
   });
 };
 
@@ -100,7 +76,8 @@ const updateLink = (root, args, context, info) => {
   let link = {
     id: args.id,
     description: args.description,
-    url: args.url
+    url: args.url,
+    updatedAt: args.updatedAt
   };
   console.log('Mutation.updateLink.link:::', root);
   return link;

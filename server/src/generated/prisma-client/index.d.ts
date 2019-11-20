@@ -183,7 +183,9 @@ export type LinkOrderByInput =
   | "url_ASC"
   | "url_DESC"
   | "createdAt_ASC"
-  | "createdAt_DESC";
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type VoteOrderByInput = "id_ASC" | "id_DESC";
 
@@ -446,6 +448,14 @@ export interface LinkScalarWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
   OR?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
   NOT?: Maybe<LinkScalarWhereInput[] | LinkScalarWhereInput>;
@@ -550,6 +560,14 @@ export interface LinkWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   votes_some?: Maybe<VoteWhereInput>;
   AND?: Maybe<LinkWhereInput[] | LinkWhereInput>;
 }
@@ -1077,6 +1095,7 @@ export interface LinkPreviousValues {
   description: String;
   url: String;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface LinkPreviousValuesPromise
@@ -1086,6 +1105,7 @@ export interface LinkPreviousValuesPromise
   description: () => Promise<String>;
   url: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface LinkPreviousValuesSubscription
@@ -1095,6 +1115,7 @@ export interface LinkPreviousValuesSubscription
   description: () => Promise<AsyncIterator<String>>;
   url: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface LinkSubscriptionPayload {
@@ -1127,6 +1148,7 @@ export interface Link {
   description: String;
   url: String;
   createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface LinkPromise extends Promise<Link>, Fragmentable {
@@ -1135,6 +1157,7 @@ export interface LinkPromise extends Promise<Link>, Fragmentable {
   url: () => Promise<String>;
   postedBy: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   votes: <T = FragmentableArray<Vote>>(args?: {
     where?: VoteWhereInput;
     orderBy?: VoteOrderByInput;
@@ -1154,6 +1177,7 @@ export interface LinkSubscription
   url: () => Promise<AsyncIterator<String>>;
   postedBy: <T = UserSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   votes: <T = Promise<AsyncIterator<VoteSubscription>>>(args?: {
     where?: VoteWhereInput;
     orderBy?: VoteOrderByInput;
@@ -1173,6 +1197,7 @@ export interface LinkNullablePromise
   url: () => Promise<String>;
   postedBy: <T = UserPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   votes: <T = FragmentableArray<Vote>>(args?: {
     where?: VoteWhereInput;
     orderBy?: VoteOrderByInput;

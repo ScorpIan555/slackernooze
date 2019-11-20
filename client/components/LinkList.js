@@ -1,30 +1,8 @@
 import React, { Component } from 'react';
 import Link from './Link';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { FEED_QUERY } from '../lib/graphql';
 import { NetworkStatus } from 'apollo-client';
-
-const FEED_QUERY = gql`
-  {
-    feed(first: 10, skip: 0, orderBy: createdAt_DESC) {
-      links {
-        id
-        url
-        description
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-    }
-  }
-`;
 
 const feedQueryVars = {
   skip: 0,
@@ -37,9 +15,6 @@ const queryOptions = {
 };
 
 const LinkList = props => {
-
-  
-
   return (
     <Query query={FEED_QUERY} options={queryOptions}>
       {({ loading, error, data, NetworkStatus }) => {
