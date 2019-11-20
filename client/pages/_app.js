@@ -8,7 +8,6 @@ import {
   AwsAmplify,
   AwsAmplifyAuth as AuthInstance
 } from '../lib/awsExports'; // Aws-amplify api modules
-import { useAuth } from '../lib/stateManagement';
 
 // initialize instance of AWS Amplify Auth module
 AwsAmplify.configure({ Auth: AwsAuthConfig.Auth });
@@ -48,7 +47,7 @@ class MyApp extends App {
     //
     AuthInstance.currentCredentials()
       .then(result => {
-        console.log('fish:::', result);
+        console.log('fish.result:::', result);
         let currentCredentials = result;
         this.setState({
           currentCredentials: currentCredentials
@@ -65,7 +64,11 @@ class MyApp extends App {
         console.log('currentSession.result:::', result);
         let currentSession = result;
         this.setState({
-          currentSession: currentSession
+          currentSession: currentSession,
+          token:
+            currentSession != undefined || null
+              ? currentSession.accessToken.jwtToken
+              : null
         });
         return currentSession;
       })
@@ -97,7 +100,7 @@ class MyApp extends App {
     console.log('_app.js -- this:::', this);
 
     return (
-      <ProvideAuth session={this.state.currentSession}>
+      <ProvideAuth token={this.state.token}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

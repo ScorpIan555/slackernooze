@@ -34,6 +34,8 @@ const Header = props => {
 
   console.log('router:::', router);
   console.log('auth:::', auth);
+  console.log('props:::', props);
+  // console.log('global', global)
 
   const handleClick = async () => {
     try {
@@ -63,7 +65,7 @@ const Header = props => {
         {authToken ? (
           <div className="mv3">
             <Link href={router.pathname}>
-              <a> | Logout</a>
+              <a onClick={handleClick}> | Logout</a>
             </Link>
           </div>
         ) : (

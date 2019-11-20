@@ -3,10 +3,12 @@ import Auth from '@aws-amplify/auth';
 
 const authContext = createContext();
 
-export const ProvideAuth = ({ children }, { session }) => {
+export const ProvideAuth = ({ children, token }) => {
   // initialize an value for the initial application state
   const auth = useProvideAuth();
-  session = session;
+  auth['sessionToken'] = token;
+  console.log('ProvideAuth.auth:::', token);
+  // session = session;
   // return the app's auth state wrapper
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
 };
@@ -23,9 +25,10 @@ export const useAuth = () => {
 
 // prob need to get the session token and then stick it into context
 
-function useProvideAuth() {
+function useProvideAuth(session) {
   const [user, setUser] = useState(null); // user object to share in client app
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log('session:::', session);
   const [sessionToken, setSessionToken] = useState('');
 
   const toggleIsLoggedInBoolean = () => {
@@ -60,6 +63,7 @@ function useProvideAuth() {
       }
 
       // 'signUp', 'signIn', 'signOut' should use the below block
+      console.log('Auth[method](params):::', method, params);
       response = await Auth[method](params);
       console.log('response:::', response);
 
