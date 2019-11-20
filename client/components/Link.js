@@ -9,6 +9,11 @@ const Link = props => {
   let auth = useAuth();
   let authToken = auth.sessionToken;
 
+  const handleClick = props => {
+    // event.preventDefault();
+    console.log('Vote.handleClick:::', props);
+  };
+
   return (
     <div className="flex mt2 items-start">
       <div className="flex items-center">
@@ -17,6 +22,7 @@ const Link = props => {
           <Mutation
             mutation={VOTE_MUTATION}
             variables={{ linkId: props.link.id }}
+            onClick={handleClick(props)}
           >
             {voteMutation => (
               <div className="ml1 gray f11" onClick={voteMutation}>

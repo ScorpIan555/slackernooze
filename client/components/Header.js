@@ -20,14 +20,21 @@ const Header = props => {
   // from tutorial
   // const authToken = window.localStorage.getItem(AUTH_TOKEN);
   let authToken = auth.sessionToken;
+  // let authToken =
+  //   window != undefined ? localStorage.getItem(AUTH_TOKEN) : auth.sessionToken;
   // console.log('authToken::', auth);
   // console.log('authToken::', authToken);
   const [method, setMethod] = useState('signOut');
   // initialize hook to call aws api
   const [{ status, response }, makeRequest] = useAuthRequest(method);
-  console.log('Header.props:::', props);
+  // console.log('Header.props:::', props);
+  // console.log('Header.props:::', auth);
+  // console.log('Header.authToken:::', Header.authToken);
+  // console.log('window:::', window);
 
   console.log('router:::', router);
+  console.log('auth:::', auth);
+
   const handleClick = async () => {
     try {
       await makeRequest(method);
@@ -54,8 +61,8 @@ const Header = props => {
 
         {/* conditionally render authentication buttons in the top nav */}
         {authToken ? (
-          <div>
-            <Link href="/">
+          <div className="mv3">
+            <Link href={router.pathname}>
               <a> | Logout</a>
             </Link>
           </div>

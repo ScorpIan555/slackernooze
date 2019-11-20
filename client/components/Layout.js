@@ -10,6 +10,7 @@ import './index.scss';
 import navButtons from '../lib/guiUtils/buttonUtils';
 
 const Layout = props => {
+  console.log('Layout:::', props);
   const appTitle = `> SLACKER_NEWS`;
 
   return (

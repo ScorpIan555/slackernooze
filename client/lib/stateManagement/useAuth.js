@@ -3,9 +3,10 @@ import Auth from '@aws-amplify/auth';
 
 const authContext = createContext();
 
-export const ProvideAuth = ({ children }) => {
+export const ProvideAuth = ({ children }, { session }) => {
   // initialize an value for the initial application state
   const auth = useProvideAuth();
+  session = session;
   // return the app's auth state wrapper
   return <authContext.Provider value={auth}> {children}</authContext.Provider>;
 };

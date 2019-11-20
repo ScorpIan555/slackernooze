@@ -108,7 +108,7 @@ const UserSignup = props => {
           ? data.signup.token
           : null
         : null;
-    await // const { token } = data.login;
+    // const { token } = data.login;
     console.log('token:::', token);
 
     await _saveUserData(token);

@@ -148,29 +148,7 @@ function initApolloClient(initialState) {
  * @param  {Object} [initialState={}]
  */
 function createApolloClient(initialState = {}) {
-  // const getCredentialsAsync = async () => {
-  //   try {
-  //     let res = await AwsAmplifyAuth.currentCredentials();
-  //     console.log('getCredentials.res:::', res);
-  //     return res;
-  //   } catch (error) {
-  //     console.log('getCredentials.catch(error):::', error);
-  //     console.error('getCredentials.catch(error):::', error);
-  //   }
-  // };
-
-  // const getCredentials = () => {
-  //   AwsAmplifyAuth.currentCredentials()
-  //     .then(result => {
-  //       console.log('getCredentials.result:::', result);
-  //       return result;
-  //     })
-  //     .catch(error => {
-  //       console.log('getCredentialsError:::', error);
-  //       console.error(error);
-  //     });
-  // };
-
+  
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   // read this tomorrow:  https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/82ncClient
   // https://github.com/awslabs/aws-mobile-appsync-sdk-js#creating-a-client
@@ -257,51 +235,46 @@ function createApolloClient(initialState = {}) {
     // let token = AwsAmplifyAuth.currentSession().then
     const token = localStorage.getItem(AUTH_TOKEN);
     console.log('headers:::', headers);
+    console.log('cache:::', cache);
+    console.log('AUTH_TOKEN:::', AUTH_TOKEN);
+    // const data = cache.readQuery({
+    //   query: token
+    // });
 
     console.log('auth.sessionToken:::', JSON.stringify(token));
     return {
       headers: {
         ...headers,
         authorization: token ? `Bearer ${token}` : ''
+        // authorization: token ? `Bearer ${data.accessToken}` : ''
       }
     };
   });
 
-  console.log('authLink::', authLink);
-  console.log('token:::', token);
-  // console.log('window.localStorage:::', window.localStorage);
-  // typeof window != undefined
-  //   ? console.log('window.localStorage:::', window.localStorage)
-  //   : null;
-  // if (window != undefined || null) {
-  //   console.log(
-  //     'window.localStorage.auth-link:::',
-  //     window.localStorage['auth-link']
-  //   );
-  // }
-
-  // console.log('localStorage:::', localStorage.AUTH_TOKEN);
-
-  const httpLink = {
+  const httpLinkConfig = {
     // log: () => console.log('window:', window),
     uri: process.env.HOST, // Server URL (must be absolute)
     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     fetch
   };
 
-  //   let link = ApolloLink.from([
-  // new AuthLink,Ap
-  // new HttpLink(httpLink)
-  //   ])
+  const httpLink = new HttpLink(httpLinkConfig);
+
+  const cache = new InMemoryCache().restore(initialState);
+
+  const ssrMode = typeof window === 'undefined';
+
+  console.log('authLink::', authLink);
+  console.log('token:::', token);
 
   // looks, right now, like this return block needs to be replaced w/ a new AWS...Client({...}) etc, etc, etc...
   return new ApolloClient({
     // great write-up of GQL visual
     // https://blog.apollographql.com/the-concepts-of-graphql-bc68bd819be3
-    ssrMode: typeof window === 'undefined', // Disables forceFetch on the server (so queries are only run once)
+    ssrMode, // Disables forceFetch on the server (so queries are only run once)
     // link: authLink.concat(httpLink),
     // link: new HttpLink(httpLink),
-    link: ApolloLink.from([authLink, new HttpLink(httpLink)]),
-    cache: new InMemoryCache().restore(initialState)
+    link: ApolloLink.from([authLink, httpLink]),
+    cache
   });
 }
