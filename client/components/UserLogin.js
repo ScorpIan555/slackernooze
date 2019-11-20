@@ -10,7 +10,6 @@ import {
   ERROR
 } from '../lib/stateManagement';
 import { GraphQLMutation, LOGIN_MUTATION } from '../lib/graphql';
-import { AUTH_TYPE } from 'aws-appsync-auth-link';
 
 // import { SharedAuth } from '../lib/authUtils';
 
