@@ -4,13 +4,16 @@ import Auth from '@aws-amplify/auth';
 const authContext = createContext();
 
 export const ProvideAuth = ({ children, token, user }) => {
+  console.log('ProvideAuth.children:::', children);
+  console.log('ProvideAuth.token:::', token);
+  console.log('ProvideAuth.user:::', user);
   // initialize an value for the initial application state
   const auth = useProvideAuth();
   if (token != undefined || null) {
     auth['sessionToken'] = token;
     console.log('ProvideAuth.auth:::', token);
   }
-  if (user != undefined || (null && auth == undefined) || null) {
+  if (user != undefined && auth == undefined) {
     console.log('ProvideAuth.auth.user:::', user);
     auth['user'] = user;
   }
@@ -55,6 +58,7 @@ function useProvideAuth(session) {
       let response;
       let responseUser;
       let responseSessionToken;
+      let responseStatus;
 
       // 2)
       // call Aws Cognito resource
@@ -62,9 +66,21 @@ function useProvideAuth(session) {
       // 'confirmUserSignUp' should use this block
       // 'confirmUserSignUp' flow should not update state, it's a simple req/res
       if (method === 'confirmSignUp') {
+        // have to call the for the current session here in order to set the token
+
+        // response from this call is only SUCCESS or FAILURE
         response = await Auth[method](params.username, params.code);
-        // response['status'] = 'ok';
-        return response;
+        // response = Auth.currentSession();
+        // console.log('confirmUser.response:::', response);
+        // // response['status'] = 'ok';
+        // let userSession =
+        //   response != undefined
+        //     ? response.signInUserSession.accessToken.jwtToken
+        //     : null;
+
+        // console.log('userSession:::', userSession);
+        // responseSessionToken = response.signInUserSession.accessToken.jwtToken;
+        return { response };
       }
 
       // 'signUp', 'signIn', 'signOut' should use the below block
@@ -84,6 +100,7 @@ function useProvideAuth(session) {
 
         response['status'] = 'ok';
         responseUser = response.attributes;
+        console.log('handleApi.response:::', response);
         {
           method === 'signIn'
             ? (responseSessionToken =
@@ -93,10 +110,13 @@ function useProvideAuth(session) {
         // {
         //   method === 'signUp'
         //     ? (responseSessionToken =
-        //         response.signUpUserSession.accessToken.jwtToken)
+        //         response != undefined
+        //           ? response.user
+        //           : null)
         //     : null;
         // }
       }
+      
       // with response successfully received, update application state with user & session info
       handleAuthStateUpdate(responseUser, responseSessionToken);
 
