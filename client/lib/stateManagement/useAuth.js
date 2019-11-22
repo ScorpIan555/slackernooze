@@ -3,7 +3,7 @@ import Auth from '@aws-amplify/auth';
 
 const authContext = createContext();
 
-export const ProvideAuth = ({ children, token, user }) => {
+export const ProvideAuth = ({ children, token, user, env }) => {
   console.log('ProvideAuth.children:::', children);
   console.log('ProvideAuth.token:::', token);
   console.log('ProvideAuth.user:::', user);
@@ -16,6 +16,11 @@ export const ProvideAuth = ({ children, token, user }) => {
   if (user != undefined && auth == undefined) {
     console.log('ProvideAuth.auth.user:::', user);
     auth['user'] = user;
+  }
+
+  if (env != undefined) {
+    console.log('ProvideAuth.auth.user:::', user);
+    auth['env'] = env;
   }
 
   // return the app's auth state wrapper
@@ -91,6 +96,13 @@ function useProvideAuth(session) {
       // 3)
       // update client state
       //
+      // if(method == 'signUp') {
+
+      // }
+      // //
+      // if(method == 'signUp') {
+
+      // }
 
       // 'signOut' method returns no response object, skip right to state update
       if (method != 'signOut') {
@@ -107,18 +119,21 @@ function useProvideAuth(session) {
                 response.signInUserSession.accessToken.jwtToken)
             : null;
         }
-        // {
-        //   method === 'signUp'
-        //     ? (responseSessionToken =
-        //         response != undefined
-        //           ? response.user
-        //           : null)
-        //     : null;
-        // }
+        {
+          // user.
+          method === 'signUp'
+            ? (responseSessionToken =
+                response != undefined
+                  ? response.user.pool.storage['auth-token']
+                  : null)
+            : null;
+        }
       }
-      
+
       // with response successfully received, update application state with user & session info
       handleAuthStateUpdate(responseUser, responseSessionToken);
+
+      // handleSignUpStateUpdate(response)
 
       console.log('auth after response/state update:::', response);
       return { responseUser, responseSessionToken };

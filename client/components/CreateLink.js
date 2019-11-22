@@ -8,8 +8,7 @@ const CreateLink = props => {
   const auth = useAuth();
   const authToken = auth.sessionToken;
   const user = auth.user;
-  const userEmail = user != undefined ? user.email : null;
-  const createdAt = new Date().getTime();
+
   // const [createPost, { loading }] = useMutation(POST_MUTATION);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const CreateLink = props => {
         <GraphQLMutation
           name="createNewLink"
           mutation={CREATE_POST_MUTATION}
-          variables={{ description, url, createdAt, userEmail }}
+          variables={{ description, url }}
         />
       </div>
     )

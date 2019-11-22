@@ -104,7 +104,11 @@ class MyApp extends App {
     console.log('_app.js -- this:::', this);
 
     return (
-      <ProvideAuth token={this.state.token} user={this.state.user}>
+      <ProvideAuth
+        token={this.state.token}
+        user={this.state.user}
+        env={this.props.isServer}
+      >
         <Layout>
           <Component {...pageProps} />
         </Layout>

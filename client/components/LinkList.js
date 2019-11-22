@@ -14,6 +14,10 @@ const queryOptions = {
   notifyOnNetworkStatusChange: true
 };
 
+const updateStoreAfterVote = ({ obj }) => {
+  console.log('updateStoreAfterVote:::');
+};
+
 const LinkList = props => {
   return (
     <Query query={FEED_QUERY} options={queryOptions}>

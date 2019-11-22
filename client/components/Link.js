@@ -8,7 +8,8 @@ import { useAuth } from '../lib/stateManagement';
 const Link = props => {
   console.log('Link.props:::', props);
   let auth = useAuth();
-  let authToken = auth.sessionToken;
+  let env = auth['env'];
+  let authToken = env ? auth.sessionToken : localStorage.getItem(AUTH_TOKEN);
 
   const handleClick = props => {
     // event.preventDefault();

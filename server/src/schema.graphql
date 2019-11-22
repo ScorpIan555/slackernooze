@@ -25,6 +25,8 @@ type Link {
   description: String!
   url: String!
   postedBy: User
+  createdAt: String
+  updatedAt: String
   votes: [Vote!]!
 }
 
