@@ -16,10 +16,6 @@ const Link = props => {
     console.log('Vote.handleClick:::', props);
   };
 
-  const updateStoreAfterVote = () => {
-    console.log('updateStoreAfterVote! ::: ', store, vote, props);
-  };
-
   return (
     <div className="flex mt2 items-start">
       <div className="flex items-center">

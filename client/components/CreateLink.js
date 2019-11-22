@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { GraphQLMutation, CREATE_POST_MUTATION } from '../lib/graphql';
 import { useAuth } from '../lib/stateManagement';
+import { FEED_QUERY } from '../lib/graphql';
+import { useRouter } from 'next/router';
 
 const CreateLink = props => {
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const auth = useAuth();
+  const router = useRouter();
   const authToken = auth.sessionToken;
   const user = auth.user;
-
-  // const [createPost, { loading }] = useMutation(POST_MUTATION);
 
   useEffect(() => {
     console.log('description:::', description);
@@ -43,6 +44,15 @@ const CreateLink = props => {
           name="createNewLink"
           mutation={CREATE_POST_MUTATION}
           variables={{ description, url }}
+          onCompleted={() => router.push('/')}
+          update={(store, { data: { post } }) => {
+            const data = store.readQuery({ query: FEED_QUERY });
+            data.feed.links.unshift(post);
+            store.writeQuery({
+              query: FEED_QUERY,
+              data
+            });
+          }}
         />
       </div>
     )

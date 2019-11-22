@@ -4,7 +4,8 @@ const GraphQLMutation = ({
   mutation,
   variables,
   handleAwsCall,
-  onCompleted
+  onCompleted,
+  update
 }) => {
   console.log('variables::', variables);
   console.log('mutation:::', mutation);
@@ -14,6 +15,7 @@ const GraphQLMutation = ({
       mutation={mutation}
       variables={variables}
       onCompleted={onCompleted}
+      update={update}
     >
       {handleMutation => (
         <button
