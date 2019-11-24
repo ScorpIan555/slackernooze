@@ -53,6 +53,13 @@ const Header = props => {
         <div>
           <Link href="/">{props.appTitle + ' '}</Link>
         </div>
+
+        <div>
+          <Link href="/search">
+            <a>| Search</a>
+          </Link>
+        </div>
+
         {authToken ? (
           <div className="">
             <Link href="/submit">

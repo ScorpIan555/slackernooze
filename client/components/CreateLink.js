@@ -47,6 +47,7 @@ const CreateLink = props => {
           onCompleted={() => router.push('/')}
           update={(store, { data: { post } }) => {
             const data = store.readQuery({ query: FEED_QUERY });
+            console.log('data:::', data);
             data.feed.links.unshift(post);
             store.writeQuery({
               query: FEED_QUERY,
