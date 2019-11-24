@@ -51,6 +51,7 @@ class MyApp extends App {
         let currentCredentials = result;
         this.setState({
           currentCredentials: currentCredentials
+          // sessionToken: currentCredentials.sessionToken
         });
         return;
         //  cachedResult

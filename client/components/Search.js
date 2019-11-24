@@ -2,13 +2,16 @@ import { useState, useReducer, useEffect } from 'react';
 import gql from 'graphql-tag';
 import Link from './Link';
 import { synchronousReducer } from '../lib/stateManagement';
+import { withApollo } from 'react-apollo';
+import { FEED_SEARCH_QUERY } from '../lib/graphql';
 
 const initialState = {
   links: [],
   filter: ''
 };
 
-const Search = () => {
+const Search = props => {
+  console.log('search.props:::', props);
   //   const [links, setLinks] = useState([]);
   const [state, dispatch] = useReducer(synchronousReducer, initialState);
   const { filter, links } = state;
@@ -21,6 +24,14 @@ const Search = () => {
 
   const _executeSearch = async () => {
     console.log('_executeSearch:::', filter);
+    const { filter } = state;
+    const result = await props.client.query({
+      query: FEED_SEARCH_QUERY,
+      variables: { filter }
+    });
+    const links = result.data.feed.links;
+    // this.setState({ links });
+    dispatch({ field: 'links', value: links });
   };
 
   return (
@@ -42,4 +53,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default withApollo(Search);

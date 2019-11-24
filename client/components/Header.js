@@ -16,10 +16,11 @@ import {
 const Header = props => {
   // initialize app's shared authentication state in this component
   let auth = useAuth();
+  let env = auth.env;
   let router = useRouter();
   // from tutorial
   // const authToken = window.localStorage.getItem(AUTH_TOKEN);
-  let authToken = auth.sessionToken;
+  let authToken = env ? auth.sessionToken : localStorage.getItem(AUTH_TOKEN);
   // let authToken =
   //   window != undefined ? localStorage.getItem(AUTH_TOKEN) : auth.sessionToken;
   // console.log('authToken::', auth);
