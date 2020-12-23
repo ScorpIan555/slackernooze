@@ -15,6 +15,14 @@ import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { AUTH_TOKEN } from './secrets';
 
+// https://www.howtographql.com/react-apollo/8-subscriptions/
+import { split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
+import { ws } from 'subscriptions-transport-ws';
+
+// import { ws } from 'ws';
+
 import fetch from 'isomorphic-unfetch';
 
 let apolloClient = null;
@@ -151,11 +159,12 @@ function initApolloClient(initialState) {
 function createApolloClient(initialState = {}) {
   //
   const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem(AUTH_TOKEN);
+    let token = localStorage.getItem(AUTH_TOKEN);
+    const foo = sessionStorage.getItem('bar');
     console.log('headers:::', headers);
     console.log('cache:::', cache);
     console.log('AUTH_TOKEN:::', AUTH_TOKEN);
-    // const data = cache.readQuery({
+    // const data = cache.readQuery({  https://www.apollographql.com/docs/react/caching/cache-interaction/
     //   query: token
     // });
 
@@ -182,6 +191,28 @@ function createApolloClient(initialState = {}) {
 
   const ssrMode = typeof window === 'undefined';
 
+  // const wsLink = new WebSocketLink({
+  //   uri: 'ws://localhost:4000/',
+  //   options: {
+  //     reconnect: true
+  //     // connectionParams: {
+  //     //   // authToken: localStorage.getItem(AUTH_TOKEN)
+  //     //   authToken:
+  //     //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZGRjMmRkYjAyNzQzOTAwMDcwMWY2ZTYiLCJpYXQiOjE1NzQ3MTA3NDd9.jPYvXBbkjKz0v0mbif_O6N1bPWMKJigaXXdmTKt1rMs'
+  //     // },
+  //     // ws
+  //   }
+  // });
+
+  const link = split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    // wsLink,
+    authLink.concat(httpLink)
+  );
+
   console.log('authLink-ln 184::', authLink);
   // console.log('token:::', token);
 
@@ -190,9 +221,11 @@ function createApolloClient(initialState = {}) {
     // great write-up of GQL visual
     // https://blog.apollographql.com/the-concepts-of-graphql-bc68bd819be3
     ssrMode, // Disables forceFetch on the server (so queries are only run once)
+    // ssrMode: !process.browser,
     // link: authLink.concat(httpLink),
-    // link: new HttpLink(httpLink),
-    link: ApolloLink.from([authLink, httpLink]),
+    // link: new HttpLink([httpLink]),
+    // link: ApolloLink.from([link]),
+    link: ApolloLink.from([httpLink]),
     cache
   });
 }

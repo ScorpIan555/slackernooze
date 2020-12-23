@@ -7,3 +7,9 @@ const votes = (parent, args, context) => {
 };
 
 module.exports = { postedBy, votes };
+
+// @InputType()
+// class VoteInput {
+//   @Field(() => String, { nullable: true })
+//   votes: number;
+// }

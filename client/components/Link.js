@@ -6,7 +6,7 @@ import { Mutation } from 'react-apollo';
 import { useAuth } from '../lib/stateManagement';
 
 const Link = props => {
-  console.log('Link.props:::', props);
+  // console.log('Link.props:::', props);
   let auth = useAuth();
   let env = auth['env'];
   let authToken = env ? auth.sessionToken : localStorage.getItem(AUTH_TOKEN);

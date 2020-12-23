@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development CUSTOM_ENV=local next dev",
+    "dev": "PORT=3001 HOST=localhost NODE_ENV=development CUSTOM_ENV=local next dev",
     "build": "next build",
     "start": "next start"
   },
@@ -15,6 +15,7 @@
     "@zeit/next-sass": "^1.0.1",
     "apollo-boost": "^0.4.4",
     "apollo-link-context": "^1.0.19",
+    "apollo-link-ws": "^1.0.19",
     "aws-appsync": "^2.0.2",
     "aws-appsync-auth-link": "^1.0.1",
     "aws-appsync-react": "^2.0.2",
@@ -27,7 +28,9 @@
     "prop-types": "^15.7.2",
     "react": "16.9.0",
     "react-apollo": "^3.1.0",
-    "react-dom": "16.9.0"
+    "react-dom": "16.9.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "ws": "^7.2.0"
   },
   "devDependencies": {
     "serverless-next.js": "^1.4.1"

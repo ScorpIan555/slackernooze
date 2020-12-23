@@ -16,11 +16,14 @@ import {
 const Header = props => {
   // initialize app's shared authentication state in this component
   let auth = useAuth();
-  let env = auth.env;
+  let isServer = auth.env;
   let router = useRouter();
   // from tutorial
   // const authToken = window.localStorage.getItem(AUTH_TOKEN);
-  let authToken = env ? auth.sessionToken : localStorage.getItem(AUTH_TOKEN);
+  let authToken = isServer
+    ? auth.sessionToken
+    : localStorage.getItem(AUTH_TOKEN);
+  let foo = isServer ? null : sessionStorage.setItem('bar', 'at-the-bar');
   // let authToken =
   //   window != undefined ? localStorage.getItem(AUTH_TOKEN) : auth.sessionToken;
   // console.log('authToken::', auth);
@@ -36,12 +39,13 @@ const Header = props => {
   console.log('router:::', router);
   console.log('auth:::', auth);
   console.log('props:::', props);
-  // console.log('global', global)
+  console.log('foo', foo);
 
   const handleClick = async () => {
     try {
       await makeRequest(method);
       auth.toggleIsLoggedInBoolean();
+      foo();
     } catch (error) {
       console.log('error:::', error.message);
       console.error(error);

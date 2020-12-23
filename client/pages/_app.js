@@ -4,8 +4,8 @@ import Layout from '../components/Layout';
 import { withApollo } from '../lib/apollo'; // apollo client wrapper
 import { ProvideAuth } from '../lib/stateManagement'; // client-side auth using React.context (+ custom hooks)
 import {
-  AwsAuthConfig,
-  AwsAmplify,
+  AwsAuthConfig, 
+  AwsAmplify,  
   AwsAmplifyAuth as AuthInstance
 } from '../lib/awsExports'; // Aws-amplify api modules
 
@@ -54,7 +54,7 @@ class MyApp extends App {
           // sessionToken: currentCredentials.sessionToken
         });
         return;
-        //  cachedResult
+        //  cachedResulthttps://www.theguardian.com/us
       })
       .catch(error => {
         console.log('error:::', error);
